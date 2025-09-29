@@ -1,0 +1,22 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  
+}
+body{
+  background-color: #0f1012;
+}
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  margin-top: 10px;
+  border-top-left-radius: 36px;   /* canto superior esquerdo */
+ /* canto inferior esquerdo */
+}
