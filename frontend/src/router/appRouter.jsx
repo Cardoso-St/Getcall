@@ -3,13 +3,15 @@ import Login from "../pages/Login";
 import Layout from "../components/Layout";
 import Chamados from "../pages/Chamados";
 import Tecnicos from "../pages/Tecnicos";
+import Cadastro from "../pages/Cadastro";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rota pública */}
+        {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro/>} /> {/* nova rota */}
 
         {/* Rotas privadas (com Sidebar) */}
         <Route path="/app" element={<Layout />}>
