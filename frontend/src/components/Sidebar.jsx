@@ -9,7 +9,7 @@ const Sidebar = () => {
         <img className="sidebar-logo" src="/Vector.svg" alt="GetCall Logo" />
         <div className="sidebar-title">
           <h1>GetCall</h1>
-          <span>Técnico</span>
+          <span>Admin</span>
         </div>
       </div>
 
@@ -31,6 +31,15 @@ const Sidebar = () => {
           }
         >
           👨‍🔧 Técnicos
+        </NavLink>
+
+        <NavLink
+          to="clientes" // RELATIVO ao /app
+          className={({ isActive }) =>
+            isActive ? "menu-btn active" : "menu-btn"
+          }
+        >
+          💼 Clientes
         </NavLink>
       </nav>
 

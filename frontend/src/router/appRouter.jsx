@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/Login";
 import Layout from "../components/Layout";
-import Chamados from "../pages/Chamados";
+import Chamados from "../pages/Chamado";
 import Tecnicos from "../pages/Tecnicos";
 import Cadastro from "../pages/Cadastro";
+import ChamadoDetalhado from "../pages/ChamadoDetalhado";
+import Clientes from "../pages/Clientes"
 
 function AppRoutes() {
   return (
@@ -11,12 +13,14 @@ function AppRoutes() {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro/>} /> {/* nova rota */}
+        <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* Rotas privadas (com Sidebar) */}
+        {/* Rotas privadas (com Sidebar/Layout) */}
         <Route path="/app" element={<Layout />}>
           <Route path="chamados" element={<Chamados />} />
+          <Route path="chamado/:id" element={<ChamadoDetalhado />} />
           <Route path="tecnicos" element={<Tecnicos />} />
+          <Route path="clientes" element={<Clientes />} />
         </Route>
       </Routes>
     </BrowserRouter>

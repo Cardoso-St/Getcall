@@ -1,4 +1,4 @@
-// src/pages/Tecnicos.jsx
+
 const Tecnicos = () => {
   return (
     <>

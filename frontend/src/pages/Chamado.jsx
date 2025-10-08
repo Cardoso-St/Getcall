@@ -1,6 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import "../css/Chamados.css";
 
 const Chamados = () => {
+  const navigate = useNavigate();
+
+  // Função chamada ao clicar na linha
+  const handleRowClick = (id) => {
+    navigate(`/app/chamado/${id}`);
+  };
+
+  const handleEditClick = (e, id) => {
+    e.stopPropagation(); // impede o clique de abrir o detalhe do chamado
+    console.log(`Editar chamado ${id}`);
+    // aqui depois você pode abrir um modal ou redirecionar
+  };
+
   return (
     <div className="chamados">
       <h2 className="chamados-title">Chamados</h2>
@@ -18,22 +32,28 @@ const Chamados = () => {
               <th>Ações</th>
             </tr>
           </thead>
-          {/* bloco de chamados */}
           <tbody>
-            <tr>
+            <tr onClick={() => handleRowClick("00004")} className="chamado-row">
               <td>12/04/25 20:56</td>
-              <td>00001</td>
+              <td>00004</td>
               <td>
-                <strong>Rede lenta</strong>
+                <strong>Backup não está funcionando</strong>
                 <br />
-                Instalação de Rede
+                Recuperação de Dados
               </td>
               <td>André Costa</td>
               <td>Carlos Silva</td>
               <td>
                 <span className="status aberto">Aberto</span>
               </td>
-              <td>✏️</td>
+              <td>
+                <button
+                  className="acao-botao editar"
+                  onClick={(e) => handleEditClick(e, "00004")}
+                >
+                  ✏️
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
