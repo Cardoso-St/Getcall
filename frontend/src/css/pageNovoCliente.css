@@ -1,0 +1,127 @@
+/* Container principal */
+.cliente-novo-container {
+    
+    padding: 20px;
+    position: relative;
+    margin: 0 auto;
+    max-width: 1200px;
+
+}
+
+/* Botão de voltar */
+.voltarBotaoTeste {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* Título da página */
+.titulo {
+    color: #00b894;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Card principal do formulário */
+.cliente-form-card {
+    background-color: white;
+    border-radius: 10px;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 1200px;
+}
+
+/* Cabeçalho dentro do card */
+.form-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.form-header p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Estrutura do formulário */
+.cliente-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Campos do formulário */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 8px 4px;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.form-group small {
+    color: #999;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+/* Área dos botões */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* Botões */
+.btn-cancelar,
+.btn-salvar {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Botão cancelar */
+.btn-cancelar {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-cancelar:hover {
+    background-color: #e2e2e2;
+}
+
+/* Botão salvar */
+.btn-salvar {
+    background-color: #00b894;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background-color: #009973;
+}

@@ -7,7 +7,7 @@ const ChamadoDetalhado = () => {
 
     return (
         <main className="chamado-detalhado">
-            <button className="voltar" onClick={() => navigate(-1)}>← Voltar</button>
+            <button className="voltarBotaoTeste" onClick={() => navigate(-1)}>← Voltar</button>
 
             <h2 className="titulo-pagina">Chamado detalhado</h2>
 

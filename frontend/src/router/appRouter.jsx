@@ -6,7 +6,7 @@ import Tecnicos from "../pages/Tecnicos";
 import Cadastro from "../pages/Cadastro";
 import ChamadoDetalhado from "../pages/ChamadoDetalhado";
 import Clientes from "../pages/Clientes"
-
+import ClienteNovo from "../pages/NovoCliente";
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -21,6 +21,7 @@ function AppRoutes() {
           <Route path="chamado/:id" element={<ChamadoDetalhado />} />
           <Route path="tecnicos" element={<Tecnicos />} />
           <Route path="clientes" element={<Clientes />} />
+          <Route path="/app/clientes/novo" element={<ClienteNovo />} />
         </Route>
       </Routes>
     </BrowserRouter>
