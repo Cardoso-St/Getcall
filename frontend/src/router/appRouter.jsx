@@ -1,13 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+//autenticação
 import Login from "../pages/Login";
-import Layout from "../components/Layout";
-import Chamados from "../pages/admin/Chamado";
-import Tecnicos from "../pages/admin/Tecnicos";
 import Cadastro from "../pages/Cadastro";
-import ChamadoDetalhado from "../pages/admin/ChamadoDetalhado";
-import Clientes from "../pages/admin/Clientes"
-import ClienteNovo from "../pages/admin/NovoCliente";
-import ChamadoEditar from "../pages/admin/ChamadoEditar"
+import Layout from "../components/Layout";
+
+//chamados
+import Chamados from "../pages/admin/chamados/Chamado";
+import ChamadoDetalhado from "../pages/admin/chamados/ChamadoDetalhado";
+import ChamadoEditar from "../pages/admin/chamados/ChamadoEditar"
+
+//clientes
+import Clientes from "../pages/admin/clientes/Clientes"
+import ClienteNovo from "../pages/admin/clientes/NovoCliente";
+
+//tecnicos
+import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
 
 function AppRoutes() {
   return (

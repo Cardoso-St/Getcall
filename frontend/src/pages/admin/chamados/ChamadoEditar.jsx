@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../../css/admin/ChamadoEditar.css"
-import PageHeader from "../../components/PageHeader";
+import "../../../css/admin/chamados/ChamadoEditar.css"
+import PageHeader from "../../../components/PageHeader";
 
 const EditarChamado = () => {
   const { id } = useParams();

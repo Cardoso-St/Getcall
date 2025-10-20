@@ -1,8 +1,8 @@
 import React from "react";
-import "../../css/admin/Clientes.css";
-import PageHeader from "../../components/PageHeader.jsx";
+import "../../../css/admin/clientes/Clientes.css";
+import PageHeader from "../../../components/PageHeader.jsx";
 import { useNavigate } from "react-router-dom";
-import ActionButton from "../../components/ActionButton";
+import ActionButton from "../../../components/ActionButton.jsx";
 
 const Clientes = () => {
   const todosClientes = [

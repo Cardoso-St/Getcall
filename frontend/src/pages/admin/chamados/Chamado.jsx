@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import "../../css/admin/Chamados.css";
-import PageHeader from "../../components/PageHeader";
-import ActionButton from "../../components/ActionButton";
+import "../../../css/admin/chamados/Chamados.css";
+import PageHeader from "../../../components/PageHeader";
+import ActionButton from "../../../components/ActionButton";
 
 const Chamados = () => {
   const navigate = useNavigate();

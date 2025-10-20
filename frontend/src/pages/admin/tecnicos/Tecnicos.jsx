@@ -1,7 +1,7 @@
 import React from "react";
-import "../../css/admin/Tecnicos.css";
-import PageHeader from "../../components/PageHeader.jsx";
-import ActionButton from "../../components/ActionButton";
+import "../../../css/admin/tecnicos/Tecnicos.css";
+import PageHeader from "../../../components/PageHeader.jsx";
+import ActionButton from "../../../components/ActionButton.jsx";
 
 const Tecnicos = () => {
   // Dados mockados (substitua por dados reais de API)
