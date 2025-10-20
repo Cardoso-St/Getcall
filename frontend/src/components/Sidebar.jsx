@@ -21,7 +21,7 @@ const Sidebar = () => {
             isActive ? "menu-btn active" : "menu-btn"
           }
         >
-          📋 Meus chamados
+          📋 Chamados
         </NavLink>
 
         <NavLink

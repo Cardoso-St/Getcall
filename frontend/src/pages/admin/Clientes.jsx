@@ -1,7 +1,8 @@
 import React from 'react';
-import '../css/Clientes.css'; // Crie esse arquivo para os estilos
-import PageHeader from '../components/PageHeader';
+import '../../css/admin/Clientes.css';
+import PageHeader from '../../components/PageHeader.jsx';
 import { useNavigate } from "react-router-dom";
+
 const Clientes = () => {
   // Dados mockados baseados na imagem (substitua por dados reais de API)
   const todosClientes = [

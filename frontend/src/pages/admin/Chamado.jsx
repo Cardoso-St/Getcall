@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "../css/Chamados.css";
-import PageHeader from "../components/PageHeader";
+import "../../css/admin/Chamados.css";
+import PageHeader from "../../components/PageHeader";
 const Chamados = () => {
   const navigate = useNavigate();
 
@@ -18,8 +18,10 @@ const Chamados = () => {
   return (
     <div className="chamados-container">
       {/* Cabeçalho */}
-       <PageHeader title="Chamados" onNewClick={() =>
-         alert('BOTAO PARA CRIAR NOVO CHAMADO')} />
+      <PageHeader
+        title="Chamados"
+        onNewClick={() => alert("BOTAO PARA CRIAR NOVO CHAMADO")}
+      />
 
       {/* Tabela principal */}
       <table className="tecnicos-table">

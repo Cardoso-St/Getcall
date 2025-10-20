@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import "../css/ChamadoDetalhado.css";
+import "../../css/admin/ChamadoDetalhado.css"
 
 const ChamadoDetalhado = () => {
     const { id } = useParams();

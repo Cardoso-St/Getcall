@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/Login";
 import Layout from "../components/Layout";
-import Chamados from "../pages/Chamado";
-import Tecnicos from "../pages/Tecnicos";
+import Chamados from "../pages/admin/Chamado";
+import Tecnicos from "../pages/admin/Tecnicos";
 import Cadastro from "../pages/Cadastro";
-import ChamadoDetalhado from "../pages/ChamadoDetalhado";
-import Clientes from "../pages/Clientes"
-import ClienteNovo from "../pages/NovoCliente";
+import ChamadoDetalhado from "../pages/admin/ChamadoDetalhado";
+import Clientes from "../pages/admin/Clientes"
+import ClienteNovo from "../pages/admin/NovoCliente";
+
 function AppRoutes() {
   return (
     <BrowserRouter>

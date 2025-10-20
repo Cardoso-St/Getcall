@@ -1,6 +1,6 @@
 import React from 'react';
-import '../css/Tecnicos.css'; // Crie esse arquivo para os estilos
-import PageHeader from '../components/PageHeader';
+import '../../css/admin/Tecnicos.css'; // Crie esse arquivo para os estilos
+import PageHeader from '../../components/PageHeader.jsx';
 
 const Tecnicos = () => {
   // Dados mockados baseados na imagem (substitua por dados reais de API)
