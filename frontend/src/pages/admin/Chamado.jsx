@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "../../css/admin/Chamados.css";
 import PageHeader from "../../components/PageHeader";
+import ActionButton from "../../components/ActionButton";
+
 const Chamados = () => {
   const navigate = useNavigate();
 
@@ -9,10 +11,15 @@ const Chamados = () => {
     navigate(`/app/chamado/${id}`);
   };
 
-  const handleEditClick = (e, id) => {
-    e.stopPropagation(); // impede o clique de abrir o detalhe do chamado
-    console.log(`Editar chamado ${id}`);
-    // aqui depois você pode abrir um modal ou redirecionar
+  // Função de editar
+  const handleEditClick = (id) => {
+    navigate(`/app/chamado/editar/${id}`);
+  };
+
+  // Função de deletar (exemplo: só loga no console)
+  const handleDeleteClick = (id) => {
+    console.log(`Excluir chamado ${id}`);
+    // aqui você pode chamar API para deletar
   };
 
   return (
@@ -50,13 +57,23 @@ const Chamados = () => {
             <td>
               <span className="status aberto">Aberto</span>
             </td>
-            <td>
-              <button
-                className="acao-botao editar"
-                onClick={(e) => handleEditClick(e, "00004")}
-              >
-                ✏️
-              </button>
+            <td style={{ display: "flex", gap: "6px" }}>
+              <ActionButton
+                type="delete"
+                title="Excluir chamado"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteClick("00004");
+                }}
+              />
+              <ActionButton
+                type="edit"
+                title="Editar chamado"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditClick("00004");
+                }}
+              />
             </td>
           </tr>
         </tbody>

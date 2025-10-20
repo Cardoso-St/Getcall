@@ -7,6 +7,7 @@ import Cadastro from "../pages/Cadastro";
 import ChamadoDetalhado from "../pages/admin/ChamadoDetalhado";
 import Clientes from "../pages/admin/Clientes"
 import ClienteNovo from "../pages/admin/NovoCliente";
+import ChamadoEditar from "../pages/admin/ChamadoEditar"
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
         <Route path="/app" element={<Layout />}>
           <Route path="chamados" element={<Chamados />} />
           <Route path="chamado/:id" element={<ChamadoDetalhado />} />
+          <Route path="chamado/editar/:id" element={<ChamadoEditar />} />
           <Route path="tecnicos" element={<Tecnicos />} />
           <Route path="clientes" element={<Clientes />} />
           <Route path="/app/clientes/novo" element={<ClienteNovo />} />

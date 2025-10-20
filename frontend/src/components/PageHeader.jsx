@@ -6,9 +6,11 @@ const PageHeader = ({ title, onNewClick }) => {
   return (
     <div className="page-header">
       <h2>{title}</h2>
-      <button className="novo-btn" onClick={onNewClick}>
-        + Novo
-      </button>
+      {onNewClick && (  // 👈 só renderiza se houver função
+        <button className="novo-btn" onClick={onNewClick}>
+          + Novo
+        </button>
+      )}
     </div>
   );
 };

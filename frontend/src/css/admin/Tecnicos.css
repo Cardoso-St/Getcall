@@ -1,52 +1,73 @@
 .tecnicos-container {
-    padding: 20px;
-    position: relative;
-
+  padding: 20px;
+  position: relative;
 }
 
+/* Cabeçalho */
 .tecnicos-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .tecnicos-header h2 {
-    color: #333;
-    font-size: 24px;
+  color: #333;
+  font-size: 24px;
 }
 
+/* Botão de adicionar */
 .novo-btn {
-    background-color: #00b894;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+  background-color: #00b894;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
+
+.novo-btn:hover {
+  background-color: #019875;
+}
+
+/* Tabela principal */
 .tecnicos-table {
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 10px;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tecnicos-table th,
 .tecnicos-table td {
-    padding: 22px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle; /* 👈 Garante alinhamento central vertical */
 }
 
+/* Avatar com inicial do nome */
 .avatar {
-    background-color: #00b894;
-    color: white;
-    border-radius: 50%;
-    padding: 4px 8px;
-    margin-right: 8px;
+  background-color: #00b894;
+  color: white;
+  border-radius: 50%;
+  padding: 6px 10px;
+  margin-right: 10px;
+  font-weight: bold;
 }
 
+/* Linha com hover */
+.tecnicos-table tr:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Célula de ações */
+.tecnicos-table td.acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 👈 Espaçamento uniforme entre os botões */
+  justify-content: flex-start; /* Alinha à esquerda, pode trocar por center se quiser centralizar */
+}

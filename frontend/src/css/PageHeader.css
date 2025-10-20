@@ -5,16 +5,26 @@
   margin-bottom: 20px;
 }
 
+/* Título verde */
 .page-header h2 {
-  color: #333;
+  color: #00b894; /* Verde vibrante */
   font-size: 24px;
+  font-weight: 600;
 }
 
-.novo-btn {
-  background-color: #00b894;
-  color: white;
+/* garante prioridade via seletor mais específico */
+.page-header .novo-btn {
+  background-color: #000;   /* preto */
+  color: #fff;              /* texto branco */
   border: none;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.page-header .novo-btn:hover {
+  background-color: #333;
+  transform: scale(1.05);
 }

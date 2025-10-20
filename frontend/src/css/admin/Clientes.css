@@ -1,52 +1,41 @@
 .clientes-container {
-    padding: 20px;
-    position: relative;
-
-}
-
-.clientes-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.clientes-header h2 {
-    color: #333;
-    font-size: 24px;
-}
-
-.novo-btn {
-    background-color: #00b894;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 20px;
+  position: relative;
 }
 
 .clientes-table {
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 10px;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .clientes-table th,
 .clientes-table td {
-    padding: 22px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+  padding: 22px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
 .avatar {
-    background-color: #00b894;
-    color: white;
-    border-radius: 50%;
-    padding: 4px 8px;
-    margin-right: 8px;
+  background-color: #00b894;
+  color: white;
+  border-radius: 50%;
+  padding: 8px 10px;
+  margin-right: 10px;
+  font-weight: bold;
 }
+
+.acoes-coluna {
+  width: 100px;
+  text-align: center;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Botões agora são todos gerenciados pelo componente ActionButton, não precisa mais de btn-acao, btn-edit ou btn-delete */

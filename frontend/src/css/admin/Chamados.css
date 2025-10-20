@@ -29,11 +29,13 @@
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .chamados-table th,
 .chamados-table td {
-  padding: 12px;
+  padding: 14px 18px;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
@@ -64,33 +66,9 @@
 
 .chamado-row {
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 .chamado-row:hover {
   background-color: #f9f9f9;
-}
-
-/* Botões de ação na tabela */
-.acao-botao {
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.2s, color 0.3s;
-  padding: 4px 6px;
-  border-radius: 6px;
-}
-
-.acao-botao:hover {
-  transform: scale(1.1);
-}
-
-/* Botão de edição */
-.acao-botao.editar {
-  color: #1976d2;
-}
-
-.acao-botao.editar:hover {
-  background-color: #e3f2fd;
 }
