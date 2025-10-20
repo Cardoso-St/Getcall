@@ -1,0 +1,188 @@
+.chamado-detalhado {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.voltar {
+  display: inline-block;
+  color: #00b46f;
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.titulo-pagina {
+  color: #00b46f;
+  margin-bottom: 20px;
+}
+
+.chamado-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.chamado-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.chamado-id {
+  color: #888;
+  font-size: 14px;
+}
+
+.chamado-titulo {
+  margin: 5px 0 0 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status.aberto {
+  background-color: #ffdce0;
+  color: #d32f2f;
+}
+
+.status.andamento {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status.encerrado {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+
+.chamado-conteudo {
+  flex: 2;
+}
+
+.chamado-conteudo h4 {
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.chamado-conteudo p {
+  margin-bottom: 12px;
+  color: #555;
+}
+
+.chamado-info p {
+  margin: 6px 0;
+  color: #444;
+}
+
+.tecnico-card {
+  flex: 1;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 250px;
+}
+
+.tecnico-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 20px;
+}
+
+.tecnico-avatar {
+  width: 40px;
+  height: 40px;
+  background: #00b46f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.tecnico-nome {
+  font-weight: 600;
+}
+
+.tecnico-email {
+  font-size: 13px;
+  color: #666;
+}
+
+.botoes-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.btn.andamento {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.btn.andamento:hover {
+  background-color: #bbdefb;
+}
+
+.btn.encerrado {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+
+.btn.encerrado:hover {
+  background-color: #c8e6c9;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .chamado-card {
+    flex-direction: column;
+  }
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #00b46f;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.voltar:hover {
+  background-color: #009e5a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.voltar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}

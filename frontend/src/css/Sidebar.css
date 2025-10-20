@@ -12,11 +12,11 @@
 .sidebar-header {
   display: flex;
   align-items: center;
-
   margin: 10px;
   gap: 10px;
   margin-bottom: 40px; /* dá espaço entre header e menu */
 }
+
 .linhaMenu {
   width: 100%;
 }
@@ -35,8 +35,8 @@
   align-items: center;
   gap: 10px;
 }
-/* Topo */
 
+/* Topo */
 .sidebar-logo {
   width: 32px;
   height: 32px;
