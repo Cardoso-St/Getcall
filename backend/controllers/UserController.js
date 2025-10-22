@@ -1,56 +1,118 @@
-import { User } from "../models/UserModel.js";
-import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+import User from '../models/UserModel.js';
 
-export const registerUser = async (req, res) => {
-    const { email, senha } = req.body;
+// Middleware de autenticação JWT
+export const authMiddleware = (roles = []) => async (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) return res.status(401).json({ error: 'Acesso negado. Token não fornecido.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    if (roles.length && !roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Permissão insuficiente.' });
+    }
+    next();
+  } catch (err) {
+    res.status(400).json({ error: 'Token inválido.' });
+  }
+};
+
+export const verifyToken = async (req, res) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!token)
+    return res.status(401).json({ error: 'Token não fornecido' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ where: { email: decoded.email } });
+
+    if (!user) 
+    return res.status(401).json({ error: 'Usuário não encontrado' });
+
+    res.json({ user: { email: user.email, role: user.role } });
+  
+  } catch (err) {
+    res.status(401).json({ error: 'Token inválido' });
+  }
+};
+
+// Login COM JWT
+export const login = async (req, res) => {
+  const { email, senha } = req.body;
+
+  try {
+    console.log('Tentativa de login:', { email });
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
     if (!email || !senha) {
-        return res.status(400).json({ error: "Preencha todos os campos" });
+      console.log('Faltando email ou senha:', { email, senha });
+      return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
+    }
+    
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      console.log('Usuário não encontrado:', email);
+      return res.status(400).json({ error: 'E-mail ou senha inválidos.' });
     }
 
-    try {
-        const userExists = await User.findOne({ where: { email } });
-        if (userExists) {
-            return res.status(400).json({ error: "E-mail já cadastrado" });
-        }
+    console.log('Usuário encontrado:', { id: user.id, email: user.email, role: user.role });
+    
+    const verificaSenhaValida = await user.comparePassword(senha);
 
-        const hashedSenha = await bcrypt.hash(senha, 10);
-        const user = await User.create({ email, senha: hashedSenha });
-
-        return res.status(201).json({ message: "Usuário cadastrado com sucesso", id: user.id });
-    } catch (error) {
-        return res.status(500).json({ error: "Erro ao registrar usuário" });
+    if (!verificaSenhaValida) {
+      console.log('Senha inválida para:', email);
+      return res.status(400).json({ error: 'E-mail ou senha inválidos.' });
     }
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    console.log('Token gerado:', token);  
+    res.json({ token, user: { email: user.email, role: user.role } });
+  
+  } catch (err) {
+    console.error('Erro no login:', err.message); // Log apenas a mensagem
+    res.status(500).json({ error: 'Erro interno no servidor' }); // Resposta genérica
+  }
 };
-export const loginUser = async (req, res) => {
-    const { email, senha } = req.body;
+
+// Criar usuário (apenas o admin pode criar)
+export const criarUsuario = async (req, res) => {
+  const { email, senha, role } = req.body;
+  try {
+    console.log('Tentativa de criar usuário:', { email, role });
 
     if (!email || !senha) {
-        return res.status(400).json({ error: "Preencha todos os campos" });
+      return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
     }
+    
+    const emailExistente = await User.findOne({ where: { email } });
+    if (emailExistente) 
+    return res.status(400).json({ error: 'E-mail já cadastrado.' });
 
-    try {
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return res.status(401).json({ error: "Credenciais inválidas" });
-        }
-
-        const match = await bcrypt.compare(senha, user.senha);
-        if (!match) {
-            return res.status(401).json({ error: "Credenciais inválidas" });
-        }
-
-        return res.status(200).json({ message: "Login realizado com sucesso", userId: user.id });
-    } catch (error) {
-        return res.status(500).json({ error: "Erro ao realizar login" });
-    }
+    const newUser = await User.create({ email, senha, role: role || 'user' });
+    res.status(201).json({ message: 'Usuário criado com sucesso.', user: { email, role } });
+  
+  } catch (err) {
+    console.error('Erro ao criar usuário:', err);
+    res.status(500).json({ error: 'Erro no servidor.' });
+  }
 };
+
+// Listar usuários (apenas admin)
 export const listarUsuarios = async (req, res) => {
-    try {
-        const users = await User.findAll({ attributes: ["id", "email"] }); // não retorna senha
-        return res.json(users);
-    } catch (error) {
-        return res.status(500).json({ error: "Erro ao listar usuários" });
-    }
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'email', 'role', 'createdAt'],
+    });
+    res.json(users);
+  } catch (err) {
+    console.error('Erro ao listar usuários:', err);
+    res.status(500).json({ error: 'Erro no servidor.' });
+  }
 };
-

@@ -1,10 +1,10 @@
-import express from "express";
-import { registerUser, loginUser, listarUsuarios } from "../controllers/UserController.js";
+import express from 'express';
+import { login, authMiddleware, verifyToken, listarUsuarios, criarUsuario } from '../controllers/UserController.js';
 
 const router = express.Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.get("/all", listarUsuarios);
-
+router.post('/login', login);
+router.post('/create-user', authMiddleware(['admin']), criarUsuario);
+router.get('/list-users', authMiddleware(['admin']), listarUsuarios);
+router.get('/verify-token', verifyToken)
 export default router;
