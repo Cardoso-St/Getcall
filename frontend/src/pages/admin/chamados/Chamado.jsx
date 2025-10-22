@@ -16,10 +16,14 @@ const Chamados = () => {
     navigate(`/app/chamado/editar/${id}`);
   };
 
-  // Função de deletar (exemplo: só loga no console)
+  // Função de deletar
   const handleDeleteClick = (id) => {
     console.log(`Excluir chamado ${id}`);
-    // aqui você pode chamar API para deletar
+  };
+
+  // ✅ Função para criar novo chamado
+  const handleNewChamado = () => {
+    navigate("/app/chamado/novo");
   };
 
   return (
@@ -27,7 +31,7 @@ const Chamados = () => {
       {/* Cabeçalho */}
       <PageHeader
         title="Chamados"
-        onNewClick={() => alert("BOTAO PARA CRIAR NOVO CHAMADO")}
+        onNewClick={handleNewChamado} // ✅ agora navega corretamente
       />
 
       {/* Tabela principal */}
