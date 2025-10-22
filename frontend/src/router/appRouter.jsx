@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 // Autenticação
 import Login from "../pages/Login";
@@ -21,35 +23,122 @@ import TecnicoDetalhado from "../pages/admin/tecnicos/TecnicoDetalhado";
 import TecnicoEditar from "../pages/admin/tecnicos/TecnicosEditar";
 import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
 
+// 🧩 Componente de proteção de rota
+const RotaProtegida = ({ children, adminOnly }) => {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <div>Carregando...</div>;
+  if (!user) return <Navigate to="/login" />;
+  if (adminOnly && user.role !== "admin")
+    return <Navigate to="/app/chamados" />;
+
+  return children;
+};
+
 function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Rotas públicas */}
-        <Route path="/" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+    <Routes>
+      {/* Rotas públicas */}
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* Rotas privadas (com Sidebar/Layout) */}
-        <Route path="/app" element={<Layout />}>
-        
-          {/* CHAMADOS */}
-          <Route path="chamados" element={<Chamados />} />
-          <Route path="chamado/novo" element={<ChamadoNovo />} />{" "}
-          <Route path="chamado/editar/:id" element={<ChamadoEditar />} />
-          <Route path="chamado/:id" element={<ChamadoDetalhado />} />{" "}
+      {/* Rotas privadas (com Sidebar/Layout) */}
+      <Route
+        path="/app"
+        element={
+          <RotaProtegida>
+            <Layout />
+          </RotaProtegida>
+        }
+      >
+        {/* CHAMADOS */}
+        <Route
+          path="chamados"
+          element={
+            <RotaProtegida>
+              <Chamados />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="chamado/novo"
+          element={
+            <RotaProtegida>
+              <ChamadoNovo />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="chamado/editar/:id"
+          element={
+            <RotaProtegida>
+              <ChamadoEditar />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="chamado/:id"
+          element={
+            <RotaProtegida>
+              <ChamadoDetalhado />
+            </RotaProtegida>
+          }
+        />
 
-          {/* CLIENTES */}
-          <Route path="clientes" element={<Clientes />} />
-          <Route path="clientes/novo" element={<ClienteNovo />} />
+        {/* CLIENTES */}
+        <Route
+          path="clientes"
+          element={
+            <RotaProtegida adminOnly>
+              <Clientes />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="clientes/novo"
+          element={
+            <RotaProtegida adminOnly>
+              <ClienteNovo />
+            </RotaProtegida>
+          }
+        />
 
-          {/* TÉCNICOS */}
-          <Route path="tecnicos" element={<Tecnicos />} />
-          <Route path="tecnicos/:id" element={<TecnicoDetalhado />} />{" "}
-          <Route path="tecnicos/editar/:id" element={<TecnicoEditar />} />{" "}
-          <Route path="tecnicos/novo" element={<TecnicoNovo />} />{" "}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        {/* TÉCNICOS */}
+        <Route
+          path="tecnicos"
+          element={
+            <RotaProtegida adminOnly>
+              <Tecnicos />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="tecnicos/:id"
+          element={
+            <RotaProtegida adminOnly>
+              <TecnicoDetalhado />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="tecnicos/editar/:id"
+          element={
+            <RotaProtegida adminOnly>
+              <TecnicoEditar />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="tecnicos/novo"
+          element={
+            <RotaProtegida adminOnly>
+              <TecnicoNovo />
+            </RotaProtegida>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 

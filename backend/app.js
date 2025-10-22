@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import { conn } from "./config/sequelize.js";
 import userRoutes from "./routes/UserRoutes.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
 const app = express();
 
 app.use(

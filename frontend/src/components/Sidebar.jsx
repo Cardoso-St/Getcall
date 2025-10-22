@@ -1,55 +1,54 @@
-import { NavLink } from "react-router-dom";
-import "../css/Sidebar.css";
+import { useContext } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import '../css/Sidebar.css';
 
 const Sidebar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar">
-      {/* Logo / Topo */}
       <div className="sidebar-header">
         <img className="sidebar-logo" src="/Vector.svg" alt="GetCall Logo" />
         <div className="sidebar-title">
           <h1>GetCall</h1>
-          <span>Admin</span>
+          <span>{user?.role === 'admin' ? 'Admin' : 'Usuário'}</span>
         </div>
       </div>
 
-      {/* Menu */}
       <nav className="sidebar-menu">
         <NavLink
-          to="chamados" // RELATIVO ao /app
-          className={({ isActive }) =>
-            isActive ? "menu-btn active" : "menu-btn"
-          }
+          to="chamados"
+          className={({ isActive }) => (isActive ? 'menu-btn active' : 'menu-btn')}
         >
           📋 Chamados
         </NavLink>
-
-        <NavLink
-          to="tecnicos" // RELATIVO ao /app
-          className={({ isActive }) =>
-            isActive ? "menu-btn active" : "menu-btn"
-          }
-        >
-          👨‍🔧 Técnicos
-        </NavLink>
-
-        <NavLink
-          to="clientes" // RELATIVO ao /app
-          className={({ isActive }) =>
-            isActive ? "menu-btn active" : "menu-btn"
-          }
-        >
-          💼 Clientes
-        </NavLink>
+        {user?.role === 'admin' && (
+          <>
+            <NavLink
+              to="tecnicos"
+              className={({ isActive }) => (isActive ? 'menu-btn active' : 'menu-btn')}
+            >
+              👨‍🔧 Técnicos
+            </NavLink>
+            <NavLink
+              to="clientes"
+              className={({ isActive }) => (isActive ? 'menu-btn active' : 'menu-btn')}
+            >
+              💼 Clientes
+            </NavLink>
+          </>
+        )}
       </nav>
 
-      {/* Usuário */}
       <div className="sidebar-user">
-        <div className="user-avatar">UT</div>
+        <div className="user-avatar">{user?.email.charAt(0)}</div>
         <div className="user-info">
-          <p className="user-name">Usuário Admin</p>
-          <p className="user-email">user.tech@test.com</p>
+          <p className="user-name">{user?.email}</p>
+          <p className="user-email">{user?.role === 'admin' ? 'Administrador' : 'Usuário'}</p>
         </div>
+        <button onClick={logout} className="logout-btn">Sair</button>
       </div>
     </div>
   );

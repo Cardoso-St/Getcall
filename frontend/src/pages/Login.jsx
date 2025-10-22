@@ -1,30 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import "../css/Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const context = useContext(AuthContext);
+
+  // Verificação para evitar erro de contexto indefinido
+  if (!context) {
+    console.error("AuthContext não está disponível. Verifique se o Login está dentro de AuthProvider.");
+    return <div>Erro: Contexto de autenticação não encontrado.</div>;
+  }
+
+  const { login } = context;
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+      const result = await login(email, senha);
+      if (result?.success) {
         setMensagem("✅ Login realizado com sucesso!");
         setTimeout(() => navigate("/app/chamados"), 1000);
       } else {
-        setMensagem(`❌ ${data.error}`);
+        setMensagem(`❌ ${result?.error || "Erro ao realizar login."}`);
       }
     } catch (error) {
       setMensagem("❌ Erro ao conectar ao servidor.");
@@ -76,13 +78,6 @@ const Login = () => {
                 {mensagem}
               </p>
             )}
-          </div>
-
-          <div className="signup-card">
-            <p>Ainda não tem uma conta?</p>
-            <button type="button" className="btn-secondary" onClick={() => navigate("/cadastro")}>
-              Criar conta
-            </button>
           </div>
         </div>
       </div>

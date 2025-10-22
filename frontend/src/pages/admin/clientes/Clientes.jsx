@@ -1,27 +1,69 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../../../css/admin/clientes/Clientes.css";
 import PageHeader from "../../../components/PageHeader.jsx";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../../components/ActionButton.jsx";
+import axios from "axios";
+import { AuthContext } from "../../../context/AuthContext"; // ajuste o caminho se necessário
 
 const Clientes = () => {
-  const todosClientes = [
-    { id: 1, nome: "André Costa", email: "andre.costa@client.com" },
-    { id: 2, nome: "Julia Maria", email: "julia.maria@client.com" },
-    { id: 3, nome: "Aline Souza", email: "aline.souza@client.com" },
-    { id: 4, nome: "Carlos Silva", email: "carlos.silva@test.com" },
-    { id: 5, nome: "Suzane Moura", email: "suzane.moura@client.com" },
-  ];
-
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [clientes, setClientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  // Carregar clientes do backend
+  useEffect(() => {
+    if (!user || user?.role !== "admin") return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Token não encontrado. Faça login novamente.");
+      setLoading(false);
+      return;
+    }
+
+    axios
+      .get("http://localhost:5000/api/users/list-users", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setClientes(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar clientes:", err);
+        setError("Erro ao carregar clientes.");
+        setLoading(false);
+      });
+  }, [user]);
+
+  // Proteções
+  if (!user || user?.role !== "admin") return <p>Acesso negado.</p>;
+  if (loading) return <p>Carregando...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
+  // Funções de ação (mantidas do código original)
   const handleEditClick = (id) => {
     navigate(`/app/clientes/editar/${id}`);
   };
 
   const handleDeleteClick = (id) => {
-    console.log(`Excluir cliente ${id}`);
-    // aqui você pode chamar a API para deletar
+    if (window.confirm("Tem certeza que deseja excluir este cliente?")) {
+      const token = localStorage.getItem("token");
+      axios
+        .delete(`http://localhost:5000/api/users/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          setClientes(clientes.filter((c) => c.id !== id));
+        })
+        .catch((err) => {
+          alert("Erro ao excluir cliente.");
+          console.error(err);
+        });
+    }
   };
 
   return (
@@ -40,18 +82,20 @@ const Clientes = () => {
           </tr>
         </thead>
         <tbody>
-          {todosClientes.map((cliente) => (
+          {clientes.map((cliente) => (
             <tr key={cliente.id}>
               <td>
                 <span className="avatar">
                   {cliente.nome
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                    .substring(0, 2)
-                    .toUpperCase()}
+                    ? cliente.nome
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .substring(0, 2)
+                        .toUpperCase()
+                    : cliente.email.charAt(0).toUpperCase()}
                 </span>
-                {cliente.nome}
+                {cliente.nome || "Nome não informado"}
               </td>
               <td>{cliente.email}</td>
               <td
