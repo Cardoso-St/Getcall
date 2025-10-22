@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../../css/admin/tecnicos/Tecnicos.css";
 import PageHeader from "../../../components/PageHeader.jsx";
 import ActionButton from "../../../components/ActionButton.jsx";
 
 const Tecnicos = () => {
-  // Dados mockados (substitua por dados reais de API)
+  const navigate = useNavigate();
+
+  // Dados mockados (substitua por dados reais de API futuramente)
   const todosTecnicos = [
     {
       id: 1,
@@ -26,14 +29,28 @@ const Tecnicos = () => {
     },
   ];
 
+  // 🔹 Redireciona ao clicar na linha
+  const handleRowClick = (id) => {
+    navigate(`/app/tecnico/${id}`);
+  };
+
+  // 🔹 Redireciona para editar
+  const handleEditClick = (id) => {
+    navigate(`/app/tecnicos/editar/${id}`);
+  };
+
+  // 🔹 Excluir técnico
+  const handleDeleteClick = (id) => {
+    console.log(`Deletar técnico ${id}`);
+    // Aqui você pode chamar a API para excluir o técnico
+  };
+
   return (
     <div className="tecnicos-container">
       {/* Cabeçalho */}
       <PageHeader
         title="Técnicos"
-        onNewClick={() =>
-          alert("BOTÃO PARA ADICIONAR TÉCNICO FUNCIONANDO PAPAI")
-        }
+        onNewClick={() => navigate("/app/tecnicos/novo")}
       />
 
       {/* Tabela principal */}
@@ -48,7 +65,11 @@ const Tecnicos = () => {
         </thead>
         <tbody>
           {todosTecnicos.map((tecnico) => (
-            <tr key={tecnico.id}>
+            <tr
+              key={tecnico.id}
+              className="tecnico-row"
+              onClick={() => handleRowClick(tecnico.id)}
+            >
               <td>
                 <span className="avatar">
                   {tecnico.nome
@@ -62,16 +83,19 @@ const Tecnicos = () => {
               </td>
               <td>{tecnico.email}</td>
               <td>{tecnico.disponibilidade}</td>
-              <td className="acoes">
+              <td
+                className="acoes"
+                onClick={(e) => e.stopPropagation()} // Impede que clique nos botões abra o detalhado
+              >
                 <ActionButton
                   type="delete"
-                  title="Excluir cliente"
-                  onClick={() => handleDeleteClick(cliente.id)}
+                  title="Excluir técnico"
+                  onClick={() => handleDeleteClick(tecnico.id)}
                 />
                 <ActionButton
                   type="edit"
-                  title="Editar cliente"
-                  onClick={() => handleEditClick(cliente.id)}
+                  title="Editar técnico"
+                  onClick={() => handleEditClick(tecnico.id)}
                 />
               </td>
             </tr>

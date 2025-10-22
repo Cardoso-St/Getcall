@@ -1,0 +1,194 @@
+/* Container principal - IDÊNTICO */
+.tecnico-novo-container {
+  padding: 20px;
+  position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+/* Botão de voltar - IDÊNTICO */
+.voltarBotaoTeste {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Título da página - IDÊNTICO */
+.titulo {
+  color: #00b894;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Card principal do formulário - IDÊNTICO */
+.tecnico-form-card {
+  background-color: white;
+  border-radius: 10px;
+  border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 1200px;
+}
+
+/* Cabeçalho dentro do card - IDÊNTICO */
+.form-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* Estrutura do formulário - IDÊNTICO */
+.tecnico-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Campos do formulário - IDÊNTICO */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  border: none;
+  border-bottom: 1px solid #eee;
+  padding: 8px 4px;
+  font-size: 15px;
+  color: #333;
+  background: transparent;
+}
+
+.form-group input::placeholder {
+  color: #aaa;
+}
+
+.form-group small {
+  color: #999;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* NOVO: Container dos horários */
+.horarios-container {
+  margin-bottom: 25px;
+}
+
+.horario-periodo {
+  margin-bottom: 20px;
+}
+
+.horario-periodo h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.horarios-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.horario-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  border: 1px solid #eee;
+}
+
+.horario-item:hover {
+  background-color: #f5f5f5;
+}
+
+.horario-item input[type="checkbox"] {
+  margin: 0;
+  accent-color: #00b894;
+}
+
+/* Área dos botões - IDÊNTICO */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+/* Botões - IDÊNTICO */
+.btn-cancelar,
+.btn-salvar {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.btn-cancelar:hover {
+  background-color: #e2e2e2;
+}
+
+.btn-salvar {
+  background-color: #00b894;
+  color: white;
+}
+
+.btn-salvar:hover {
+  background-color: #009973;
+}
+
+/* Responsivo - IDÊNTICO */
+@media (max-width: 768px) {
+  .tecnico-novo-container {
+    padding: 15px;
+  }
+
+  .tecnico-form-card {
+    padding: 20px;
+  }
+
+  .horarios-lista {
+    justify-content: flex-start;
+  }
+}
+/* ===== ETAPAS DO FORMULÁRIO ===== */
+.tecnico-form-card {
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.tecnico-form-card section {
+  margin-top: 10px;
+}
+
+.form-actions button {
+  min-width: 120px;
+}

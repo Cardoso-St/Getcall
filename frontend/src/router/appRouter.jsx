@@ -1,22 +1,24 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-//autenticação
+// autenticação
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Layout from "../components/Layout";
 
-//chamados
+// chamados
 import Chamados from "../pages/admin/chamados/Chamado";
 import ChamadoDetalhado from "../pages/admin/chamados/ChamadoDetalhado";
-import ChamadoEditar from "../pages/admin/chamados/ChamadoEditar";
-import ChamadoNovo from "../pages/admin/chamados/ChamadoNovo";
+import ChamadoEditar from "../pages/admin/chamados/ChamadoEditar"
 
 //clientes
-import Clientes from "../pages/admin/clientes/Clientes";
+import Clientes from "../pages/admin/clientes/Clientes"
 import ClienteNovo from "../pages/admin/clientes/NovoCliente";
 
-//tecnicos
+// técnicos
 import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
+import TecnicoDetalhado from "../pages/admin/tecnicos/TecnicoDetalhado"; // 🔹 ADICIONADO
+import TecnicosEditar from "../pages/admin/tecnicos/TecnicosEditar";
+import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
 
 function AppRoutes() {
   return (
@@ -28,19 +30,12 @@ function AppRoutes() {
 
         {/* Rotas privadas (com Sidebar/Layout) */}
         <Route path="/app" element={<Layout />}>
-
-          {/* Chamados */}
           <Route path="chamados" element={<Chamados />} />
           <Route path="chamado/:id" element={<ChamadoDetalhado />} />
           <Route path="chamado/editar/:id" element={<ChamadoEditar />} />
-          <Route path="chamado/novo" element={<ChamadoNovo />} />{" "}
-
-          {/* Técnicos */}
           <Route path="tecnicos" element={<Tecnicos />} />
-          
-          {/* Clientes */}
           <Route path="clientes" element={<Clientes />} />
-          <Route path="clientes/novo" element={<ClienteNovo />} />
+          <Route path="/app/clientes/novo" element={<ClienteNovo />} />
         </Route>
       </Routes>
     </BrowserRouter>
