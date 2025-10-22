@@ -1,13 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // ADICIONADO
+import { useNavigate } from "react-router-dom";
 import "../../../css/admin/tecnicos/Tecnicos.css";
 import PageHeader from "../../../components/PageHeader.jsx";
 import ActionButton from "../../../components/ActionButton.jsx";
 
 const Tecnicos = () => {
-  const navigate = useNavigate(); // ADICIONADO
+  const navigate = useNavigate();
 
-  // Dados mockados (substitua por dados reais de API)
+  // Dados mockados (substitua por dados reais de API futuramente)
   const todosTecnicos = [
     {
       id: 1,
@@ -29,14 +29,20 @@ const Tecnicos = () => {
     },
   ];
 
-  // FUNÇÕES ADICIONADAS
-  const handleEditClick = (id) => {
-    navigate(`/app/tecnicos/editar/${id}`); // REDIRECIONA PARA EDITAR
+  // 🔹 Redireciona ao clicar na linha
+  const handleRowClick = (id) => {
+    navigate(`/app/tecnico/${id}`);
   };
 
+  // 🔹 Redireciona para editar
+  const handleEditClick = (id) => {
+    navigate(`/app/tecnicos/editar/${id}`);
+  };
+
+  // 🔹 Excluir técnico
   const handleDeleteClick = (id) => {
-    // Implementar lógica de delete
     console.log(`Deletar técnico ${id}`);
+    // Aqui você pode chamar a API para excluir o técnico
   };
 
   return (
@@ -44,7 +50,7 @@ const Tecnicos = () => {
       {/* Cabeçalho */}
       <PageHeader
         title="Técnicos"
-        onNewClick={() => navigate("/app/tecnicos/novo")} // ADICIONADO: redireciona para novo
+        onNewClick={() => navigate("/app/tecnicos/novo")}
       />
 
       {/* Tabela principal */}
@@ -59,7 +65,11 @@ const Tecnicos = () => {
         </thead>
         <tbody>
           {todosTecnicos.map((tecnico) => (
-            <tr key={tecnico.id}>
+            <tr
+              key={tecnico.id}
+              className="tecnico-row"
+              onClick={() => handleRowClick(tecnico.id)}
+            >
               <td>
                 <span className="avatar">
                   {tecnico.nome
@@ -73,8 +83,10 @@ const Tecnicos = () => {
               </td>
               <td>{tecnico.email}</td>
               <td>{tecnico.disponibilidade}</td>
-              <td className="acoes">
-                {/* CORRIGIDO: usar técnico ao invés de cliente */}
+              <td
+                className="acoes"
+                onClick={(e) => e.stopPropagation()} // Impede que clique nos botões abra o detalhado
+              >
                 <ActionButton
                   type="delete"
                   title="Excluir técnico"
@@ -83,7 +95,7 @@ const Tecnicos = () => {
                 <ActionButton
                   type="edit"
                   title="Editar técnico"
-                  onClick={() => handleEditClick(tecnico.id)} // CORRIGIDO
+                  onClick={() => handleEditClick(tecnico.id)}
                 />
               </td>
             </tr>

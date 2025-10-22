@@ -1,0 +1,157 @@
+.tecnico-detalhado {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+  color: #333;
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #00b46f;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+}
+
+.voltar:hover {
+  background-color: #009e5a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-pagina {
+  color: #00b46f;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+/* Card principal */
+.tecnico-card {
+  background: #fdfdfd;
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Header com avatar e dados principais */
+.tecnico-header {
+  display: flex;
+  flex-direction: row; /* avatar e dados lado a lado */
+  align-items: center;
+  gap: 20px;
+}
+
+.tecnico-avatar-grande {
+  width: 80px;
+  height: 80px;
+  background-color: #00b46f;
+  color: #fff;
+  font-size: 26px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.tecnico-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tecnico-nome {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tecnico-email {
+  font-size: 15px;
+  color: #666;
+}
+
+.tecnico-status {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 14px;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+.tecnico-status.ativo {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+
+.tecnico-status.inativo {
+  background-color: #ffdce0;
+  color: #d32f2f;
+}
+
+/* Seções de informação detalhada */
+.tecnico-info {
+  display: flex;
+  flex-wrap: wrap; /* permite colunas quando houver espaço */
+  gap: 20px;
+}
+
+.info-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  flex: 1 1 45%; /* ocupa até 45% da linha */
+  min-width: 250px;
+}
+
+.info-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #00b46f;
+}
+
+.info-card p {
+  font-size: 14px;
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.info-card strong {
+  color: #333;
+}
+
+/* Distribuição estética: algumas seções lado a lado, outras empilhadas */
+@media (max-width: 768px) {
+  .tecnico-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .tecnico-info {
+    flex-direction: column;
+  }
+
+  .info-card {
+    width: 100%;
+  }
+}
