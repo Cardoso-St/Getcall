@@ -8,14 +8,16 @@ import Layout from "../components/Layout";
 //chamados
 import Chamados from "../pages/admin/chamados/Chamado";
 import ChamadoDetalhado from "../pages/admin/chamados/ChamadoDetalhado";
-import ChamadoEditar from "../pages/admin/chamados/ChamadoEditar"
+import ChamadoEditar from "../pages/admin/chamados/ChamadoEditar";
 
 //clientes
-import Clientes from "../pages/admin/clientes/Clientes"
+import Clientes from "../pages/admin/clientes/Clientes";
 import ClienteNovo from "../pages/admin/clientes/NovoCliente";
 
 //tecnicos
 import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
+import TecnicosEditar from "../pages/admin/tecnicos/TecnicosEditar";
+import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
 
 function AppRoutes() {
   return (
@@ -27,12 +29,19 @@ function AppRoutes() {
 
         {/* Rotas privadas (com Sidebar/Layout) */}
         <Route path="/app" element={<Layout />}>
+          {/* CHAMADOS */}
           <Route path="chamados" element={<Chamados />} />
           <Route path="chamado/:id" element={<ChamadoDetalhado />} />
           <Route path="chamado/editar/:id" element={<ChamadoEditar />} />
-          <Route path="tecnicos" element={<Tecnicos />} />
+
+          {/* CLIENTES */}
           <Route path="clientes" element={<Clientes />} />
-          <Route path="/app/clientes/novo" element={<ClienteNovo />} />
+          <Route path="clientes/novo" element={<ClienteNovo />} />
+
+          {/* TÉCNICOS - NOVAS ROTAS CORRETAS */}
+          <Route path="tecnicos" element={<Tecnicos />} />
+          <Route path="tecnicos/editar/:id" element={<TecnicosEditar />} />
+          <Route path="tecnicos/novo" element={<TecnicoNovo />} />
         </Route>
       </Routes>
     </BrowserRouter>

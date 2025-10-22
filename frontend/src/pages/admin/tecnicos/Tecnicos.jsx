@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // ADICIONADO
 import "../../../css/admin/tecnicos/Tecnicos.css";
 import PageHeader from "../../../components/PageHeader.jsx";
 import ActionButton from "../../../components/ActionButton.jsx";
 
 const Tecnicos = () => {
+  const navigate = useNavigate(); // ADICIONADO
+
   // Dados mockados (substitua por dados reais de API)
   const todosTecnicos = [
     {
@@ -26,14 +29,22 @@ const Tecnicos = () => {
     },
   ];
 
+  // FUNÇÕES ADICIONADAS
+  const handleEditClick = (id) => {
+    navigate(`/app/tecnicos/editar/${id}`); // REDIRECIONA PARA EDITAR
+  };
+
+  const handleDeleteClick = (id) => {
+    // Implementar lógica de delete
+    console.log(`Deletar técnico ${id}`);
+  };
+
   return (
     <div className="tecnicos-container">
       {/* Cabeçalho */}
       <PageHeader
         title="Técnicos"
-        onNewClick={() =>
-          alert("BOTÃO PARA ADICIONAR TÉCNICO FUNCIONANDO PAPAI")
-        }
+        onNewClick={() => navigate("/app/tecnicos/novo")} // ADICIONADO: redireciona para novo
       />
 
       {/* Tabela principal */}
@@ -63,15 +74,16 @@ const Tecnicos = () => {
               <td>{tecnico.email}</td>
               <td>{tecnico.disponibilidade}</td>
               <td className="acoes">
+                {/* CORRIGIDO: usar técnico ao invés de cliente */}
                 <ActionButton
                   type="delete"
-                  title="Excluir cliente"
-                  onClick={() => handleDeleteClick(cliente.id)}
+                  title="Excluir técnico"
+                  onClick={() => handleDeleteClick(tecnico.id)}
                 />
                 <ActionButton
                   type="edit"
-                  title="Editar cliente"
-                  onClick={() => handleEditClick(cliente.id)}
+                  title="Editar técnico"
+                  onClick={() => handleEditClick(tecnico.id)} // CORRIGIDO
                 />
               </td>
             </tr>
