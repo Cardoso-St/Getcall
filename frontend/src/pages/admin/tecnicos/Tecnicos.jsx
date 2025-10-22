@@ -7,7 +7,6 @@ import ActionButton from "../../../components/ActionButton.jsx";
 const Tecnicos = () => {
   const navigate = useNavigate();
 
-  // Dados mockados (substitua por dados reais de API futuramente)
   const todosTecnicos = [
     {
       id: 1,
@@ -29,9 +28,9 @@ const Tecnicos = () => {
     },
   ];
 
-  // 🔹 Redireciona ao clicar na linha
+  // 🔹 Redireciona para TecnicoDetalhado ao clicar na linha
   const handleRowClick = (id) => {
-    navigate(`/app/tecnico/${id}`);
+    navigate(`/app/tecnicos/${id}`);
   };
 
   // 🔹 Redireciona para editar
@@ -42,18 +41,15 @@ const Tecnicos = () => {
   // 🔹 Excluir técnico
   const handleDeleteClick = (id) => {
     console.log(`Deletar técnico ${id}`);
-    // Aqui você pode chamar a API para excluir o técnico
   };
 
   return (
     <div className="tecnicos-container">
-      {/* Cabeçalho */}
       <PageHeader
         title="Técnicos"
         onNewClick={() => navigate("/app/tecnicos/novo")}
       />
 
-      {/* Tabela principal */}
       <table className="tecnicos-table">
         <thead>
           <tr>
@@ -83,10 +79,7 @@ const Tecnicos = () => {
               </td>
               <td>{tecnico.email}</td>
               <td>{tecnico.disponibilidade}</td>
-              <td
-                className="acoes"
-                onClick={(e) => e.stopPropagation()} // Impede que clique nos botões abra o detalhado
-              >
+              <td className="acoes" onClick={(e) => e.stopPropagation()}>
                 <ActionButton
                   type="delete"
                   title="Excluir técnico"

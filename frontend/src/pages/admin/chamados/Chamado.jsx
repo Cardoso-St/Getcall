@@ -21,17 +21,12 @@ const Chamados = () => {
     console.log(`Excluir chamado ${id}`);
   };
 
-  // ✅ Função para criar novo chamado
-  const handleNewChamado = () => {
-    navigate("/app/chamado/novo");
-  };
-
   return (
     <div className="chamados-container">
       {/* Cabeçalho */}
       <PageHeader
         title="Chamados"
-        onNewClick={handleNewChamado} // ✅ agora navega corretamente
+        onNewClick={() => navigate("/app/chamado/novo")} // ✅ aqui
       />
 
       {/* Tabela principal */}
