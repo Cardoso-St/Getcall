@@ -7,6 +7,7 @@ import Cadastro from "../pages/Cadastro";
 import ChamadoDetalhado from "../pages/admin/ChamadoDetalhado";
 import Clientes from "../pages/admin/Clientes"
 import ClienteNovo from "../pages/admin/NovoCliente";
+import Perfil from "../pages/Perfil"
 
 function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ function AppRoutes() {
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/perfil" element={<Perfil />} />
 
         {/* Rotas privadas (com Sidebar/Layout) */}
         <Route path="/app" element={<Layout />}>
