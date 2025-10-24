@@ -1,11 +1,13 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import DropdownMenu from './DropdownMenu';
 import '../css/Sidebar.css';
 
 const Sidebar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="sidebar">
@@ -23,6 +25,12 @@ const Sidebar = () => {
           className={({ isActive }) => (isActive ? 'menu-btn active' : 'menu-btn')}
         >
           📋 Chamados
+        </NavLink>
+        <NavLink
+          to="chamado/novo"
+          className={({ isActive }) => (isActive ? 'menu-btn active' : 'menu-btn')}
+        >
+          📋 Criar novo chamado +
         </NavLink>
         {user?.role === 'admin' && (
           <>
@@ -42,13 +50,17 @@ const Sidebar = () => {
         )}
       </nav>
 
-      <div className="sidebar-user">
-        <div className="user-avatar">{user?.email.charAt(0)}</div>
+      <div
+        className="sidebar-user"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <div className="user-avatar">{user?.email.charAt(3)}</div>
         <div className="user-info">
           <p className="user-name">{user?.email}</p>
           <p className="user-email">{user?.role === 'admin' ? 'Administrador' : 'Usuário'}</p>
         </div>
-        <button onClick={logout} className="logout-btn">Sair</button>
+        <DropdownMenu onLogout={logout} isOpen={isOpen} />
       </div>
     </div>
   );
