@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/UserModel.js';
+import Cliente from '../models/ClienteModel.js';
 import {verifyToken} from '../middleware/verifyToken.js'
 
 
@@ -16,15 +16,15 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
         }
 
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            console.log('Usuário não encontrado:', email);
+        const cliente = await Cliente.findOne({ where: { email } });
+        if (!cliente) {
+            console.log('Cliente não encontrado:', email);
             return res.status(400).json({ error: 'E-mail ou senha inválidos.' });
         }
 
-        console.log('Usuário encontrado:', { id: user.id, email: user.email, role: user.role });
+        console.log('Cliente encontrado:', { id: cliente.id, email: cliente.email, role: cliente.role });
 
-        const verificaSenhaValida = await user.comparePassword(senha);
+        const verificaSenhaValida = await cliente.comparePassword(senha);
 
         if (!verificaSenhaValida) {
             console.log('Senha inválida para:', email);
@@ -32,13 +32,13 @@ export const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id, email: user.email, role: user.role },
+            { clienteId: cliente.id, email: cliente.email, role: cliente.role },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
         console.log('Token gerado:', token);
-        res.json({ token, user: { email: user.email, role: user.role } });
+        res.json({ token, cliente: { email: cliente.email, role: cliente.role } });
 
     } catch (err) {
         console.error('Erro no login:', err.message); // Log apenas a mensagem
@@ -46,38 +46,38 @@ export const login = async (req, res) => {
     }
 };
 
-// Criar usuário (apenas o admin pode criar)
-export const criarUsuario = async (req, res) => {
-    const { email, senha, role } = req.body;
+// Criar cliente (apenas o admin pode criar)
+export const criarCliente = async (req, res) => {
+    const { nome, email, senha, role } = req.body;
     try {
-        console.log('Tentativa de criar usuário:', { email, role });
+        console.log('Tentativa de criar cliente:', { email, role });
 
-        if (!email || !senha) {
+        if ( !nome || !email || !senha ) {
             return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
         }
 
-        const emailExistente = await User.findOne({ where: { email } });
+        const emailExistente = await Cliente.findOne({ where: { email } });
         if (emailExistente)
             return res.status(400).json({ error: 'E-mail já cadastrado.' });
 
-        const newUser = await User.create({ email, senha, role: role || 'user' });
-        res.status(201).json({ message: 'Usuário criado com sucesso.', user: { email, role } });
+        const newCliente = await Cliente.create({nome, email, senha, role: role || 'cliente' });
+        res.status(201).json({ message: 'cliente criado com sucesso.', cliente: { nome, email, role } });
 
     } catch (err) {
-        console.error('Erro ao criar usuário:', err);
+        console.error('Erro ao criar cliente:', err);
         res.status(500).json({ error: 'Erro no servidor.' });
     }
 };
 
-// Listar usuários (apenas admin)
-export const listarUsuarios = async (req, res) => {
+// Listar Clientes (apenas admin)
+export const listarClientes = async (req, res) => {
     try {
-        const users = await User.findAll({
-            attributes: ['id', 'email', 'role', 'createdAt'],
+        const clientes = await Cliente.findAll({
+            attributes: ['id', 'nome', 'email', 'role', 'createdAt'],
         });
-        res.json(users);
+        res.json(clientes);
     } catch (err) {
-        console.error('Erro ao listar usuários:', err);
+        console.error('Erro ao listar Clientes:', err);
         res.status(500).json({ error: 'Erro no servidor.' });
     }
 };

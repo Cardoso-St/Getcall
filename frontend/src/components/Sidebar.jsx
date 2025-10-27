@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import '../css/Sidebar.css';
 
 const Sidebar = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { cliente, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -13,7 +13,7 @@ const Sidebar = () => {
         <img className="sidebar-logo" src="/Vector.svg" alt="GetCall Logo" />
         <div className="sidebar-title">
           <h1>GetCall</h1>
-          <span>{user?.role === 'admin' ? 'Admin' : 'Usuário'}</span>
+          <span>{cliente?.role === 'admin' ? 'Admin' : 'Cliente'}</span>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ const Sidebar = () => {
         >
           📋 Chamados
         </NavLink>
-        {user?.role === 'admin' && (
+        {cliente?.role === 'admin' && (
           <>
             <NavLink
               to="tecnicos"
@@ -42,11 +42,11 @@ const Sidebar = () => {
         )}
       </nav>
 
-      <div className="sidebar-user">
-        <div className="user-avatar">{user?.email.charAt(0)}</div>
-        <div className="user-info">
-          <p className="user-name">{user?.email}</p>
-          <p className="user-email">{user?.role === 'admin' ? 'Administrador' : 'Usuário'}</p>
+      <div className="sidebar-cliente">
+        <div className="cliente-avatar">{cliente?.email.charAt(0)}</div>
+        <div className="cliente-info">
+          <p className="cliente-name">{cliente?.email}</p>
+          <p className="cliente-email">{cliente?.role === 'admin' ? 'Administrador' : 'Cliente'}</p>
         </div>
         <button onClick={logout} className="logout-btn">Sair</button>
       </div>

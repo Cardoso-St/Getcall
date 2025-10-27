@@ -67,17 +67,32 @@
   margin-bottom: 6px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   border: none;
   border-bottom: 1px solid #eee;
   padding: 8px 4px;
   font-size: 15px;
   color: #333;
   background: transparent;
+  outline: none; /* Remove a borda padrão ao focar */
+  width: 100%; /* Garante que o select ocupe toda a largura */
+  appearance: none; /* Remove o estilo nativo do select */
+  -webkit-appearance: none; /* Para navegadores WebKit */
+  -moz-appearance: none; /* Para Firefox */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Ícone de seta personalizado */
+  background-repeat: no-repeat;
+  background-position: right 8px center; /* Posição da seta */
+  background-size: 16px; /* Tamanho da seta */
 }
 
 .form-group input::placeholder {
   color: #aaa;
+}
+
+.form-group select option {
+  color: #333;
+  background: white;
 }
 
 .form-group small {

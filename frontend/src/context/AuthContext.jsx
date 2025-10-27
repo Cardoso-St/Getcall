@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [cliente, setCliente] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -14,11 +14,11 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             axios
-                .get('http://localhost:5000/api/users/verify-token', {
+                .get('http://localhost:5000/api/clientes/verify-token', {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((res) => {
-                    setUser(res.data.user);
+                    setCliente(res.data.cliente);
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -34,9 +34,9 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, senha) => {
         setError(null);
         try {
-            const res = await axios.post('http://localhost:5000/api/users/login', { email, senha });
+            const res = await axios.post('http://localhost:5000/api/clientes/login', { email, senha });
             localStorage.setItem('token', res.data.token);
-            setUser(res.data.user);
+            setCliente(res.data.cliente);
             navigate('/app/clientes');
             return { success: true };
         } catch (err) {
@@ -48,12 +48,12 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
-        setUser(null);
+        setCliente(null);
         navigate('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading, error }}>
+        <AuthContext.Provider value={{ cliente, login, logout, loading, error }}>
             {children}
         </AuthContext.Provider>
     );

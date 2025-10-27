@@ -25,11 +25,11 @@ import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
 
 // 🧩 Componente de proteção de rota
 const RotaProtegida = ({ children, adminOnly }) => {
-  const { user, loading } = useContext(AuthContext);
+  const { cliente, loading } = useContext(AuthContext);
 
   if (loading) return <div>Carregando...</div>;
-  if (!user) return <Navigate to="/login" />;
-  if (adminOnly && user.role !== "admin")
+  if (!cliente) return <Navigate to="/login" />;
+  if (adminOnly && cliente.role !== "admin")
     return <Navigate to="/app/chamados" />;
 
   return children;

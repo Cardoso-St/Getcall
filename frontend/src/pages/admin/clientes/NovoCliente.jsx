@@ -6,19 +6,19 @@ import "../../../css/admin/clientes/NovoCliente.css";
 
 const ClienteNovo = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { cliente } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
     senha: "",
-    role: "user",
+    role: "cliente",
   });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Proteção: só admin acessa
-  if (user?.role !== "admin") {
+  if (cliente?.role !== "admin") {
     return <p style={{ color: "red", textAlign: "center" }}>Acesso negado.</p>;
   }
 
@@ -34,7 +34,7 @@ const ClienteNovo = () => {
       if (!token) throw new Error("Token não encontrado.");
 
       await axios.post(
-        "http://localhost:5000/api/users/create-user",
+        "http://localhost:5000/api/clientes/create-cliente",
         {
           nome: formData.nome,
           email: formData.email,
@@ -122,7 +122,7 @@ const ClienteNovo = () => {
               value={formData.role}
               onChange={handleChange}
             >
-              <option value="user">Usuário</option>
+              <option value="cliente">Cliente</option>
               <option value="admin">Administrador</option>
             </select>
           </div>

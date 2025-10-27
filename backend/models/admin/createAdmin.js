@@ -1,6 +1,6 @@
 // backend/models/admin/createAdmin.js
 import { conn } from "../../config/sequelize.js";
-import User from "../UserModel.js";
+import Cliente from "../ClienteModel.js";
 
 const createAdmin = async () => {
   try {
@@ -9,11 +9,12 @@ const createAdmin = async () => {
     console.log("Banco de dados sincronizado ✅");
 
     // Verifica se o admin já existe
-    const admin = await User.findOne({ where: { email: "admin@test.com" } });
+    const admin = await Cliente.findOne({ where: { email: "admin@test.com" } });
 
     if (!admin) {
       // Cria o admin apenas se não existir
-      await User.create({
+      await Cliente.create({
+        nome: 'ADEMIR SUPREMO RSRSRS',
         email: "admin@test.com",
         senha: "admin123",
         role: "admin",

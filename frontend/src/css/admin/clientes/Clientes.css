@@ -13,9 +13,10 @@
 
 .clientes-table th,
 .clientes-table td {
-  padding: 22px;
+ padding: 16px 20px;
   text-align: left;
   border-bottom: 1px solid #eee;
+  vertical-align: middle; /* 👈 Garante alinhamento central vertical */
 }
 
 .avatar {

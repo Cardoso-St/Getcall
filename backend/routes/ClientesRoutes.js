@@ -1,11 +1,11 @@
 import express from 'express';
-import { login, listarUsuarios, criarUsuario } from '../controllers/UserController.js';
+import { login, listarClientes, criarCliente } from '../controllers/ClienteController.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.post('/login', login);
-router.post('/create-user', authMiddleware(['admin']), criarUsuario);
-router.get('/list-users', authMiddleware(['admin']), listarUsuarios);
+router.post('/create-cliente', authMiddleware(['admin']), criarCliente);
+router.get('/list-clientes', authMiddleware(['admin']), listarClientes);
 router.get('/verify-token', verifyToken)
 export default router;

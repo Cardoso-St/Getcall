@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import { conn } from "./config/sequelize.js";
-import userRoutes from "./routes/UserRoutes.js";
+import ClientesRoutes from "./routes/ClientesRoutes.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -20,7 +20,7 @@ app.use(
 app.use(express.json());
 
 // 🔌 Rotas
-app.use("/api/users", userRoutes);
+app.use("/api/clientes", ClientesRoutes);
 
 // ✅ Conecta ao banco e sincroniza
 const connectDB = async () => {

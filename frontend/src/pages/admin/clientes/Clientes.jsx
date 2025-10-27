@@ -8,14 +8,14 @@ import { AuthContext } from "../../../context/AuthContext"; // ajuste o caminho 
 
 const Clientes = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { cliente} = useContext(AuthContext);
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Carregar clientes do backend
   useEffect(() => {
-    if (!user || user?.role !== "admin") return;
+    if (!cliente|| cliente?.role !== "admin") return;
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -25,7 +25,7 @@ const Clientes = () => {
     }
 
     axios
-      .get("http://localhost:5000/api/users/list-users", {
+      .get("http://localhost:5000/api/clientes/list-clientes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -37,10 +37,10 @@ const Clientes = () => {
         setError("Erro ao carregar clientes.");
         setLoading(false);
       });
-  }, [user]);
+  }, [cliente]);
 
   // Proteções
-  if (!user || user?.role !== "admin") return <p>Acesso negado.</p>;
+  if (!cliente || cliente?.role !== "admin") return <p>Acesso negado.</p>;
   if (loading) return <p>Carregando...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -53,10 +53,11 @@ const Clientes = () => {
     if (window.confirm("Tem certeza que deseja excluir este cliente?")) {
       const token = localStorage.getItem("token");
       axios
-        .delete(`http://localhost:5000/api/users/${id}`, {
+        .delete(`http://localhost:5000/api/clientes/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(() => {
+          console.log("Clientes recebidos:", res.data)
           setClientes(clientes.filter((c) => c.id !== id));
         })
         .catch((err) => {
@@ -89,7 +90,7 @@ const Clientes = () => {
                   {cliente.nome
                     ? cliente.nome
                         .split(" ")
-                        .map((n) => n[0])
+                      
                         .join("")
                         .substring(0, 2)
                         .toUpperCase()

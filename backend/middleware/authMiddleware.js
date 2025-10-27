@@ -7,8 +7,8 @@ export const authMiddleware = (roles = []) => async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        if (roles.length && !roles.includes(req.user.role)) {
+        req.cliente = decoded;
+        if (roles.length && !roles.includes(req.cliente.role)) {
             return res.status(403).json({ error: 'Permissão insuficiente.' });
         }
         next();
