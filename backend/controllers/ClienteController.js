@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Cliente from '../models/ClienteModel.js';
 import {verifyToken} from '../middleware/verifyToken.js'
-
-
+import { Op } from 'sequelize'; 
+import bcrypt from 'bcryptjs';
 // Login COM JWT
 export const login = async (req, res) => {
     const { email, senha } = req.body;
@@ -68,7 +68,65 @@ export const criarCliente = async (req, res) => {
         res.status(500).json({ error: 'Erro no servidor.' });
     }
 };
+export const editarCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, email, senha, role } = req.body;
 
+    const cliente = await Cliente.findByPk(id);
+    if (!cliente) {
+      return res.status(404).json({ error: 'Cliente não encontrado' });
+    }
+
+    // Verificar se o e-mail já está em uso por outro cliente
+    const emailExistente = await Cliente.findOne({
+      where: { email, id: { [Op.ne]: id } }, // Ignora o próprio cliente
+    });
+    if (emailExistente) {
+      return res.status(400).json({ error: 'E-mail já está em uso' });
+    }
+
+    cliente.nome = nome;
+    cliente.email = email;
+    cliente.role = role || cliente.role; // Mantém o role atual se não fornecido
+
+    // Atualizar a senha apenas se fornecida
+    if (senha) {
+      const saltRounds = 10;
+      cliente.senha = await bcrypt.hash(senha, saltRounds);
+    }
+
+    // Salvar as alterações
+    await cliente.save();
+
+    console.log('Cliente atualizado:', cliente.toJSON());
+    return res.status(200).json({ message: 'Dados do cliente atualizados com sucesso' });
+  } catch (error) {
+    console.error('Erro ao atualizar cliente:', error.message);
+    res.status(500).json({ message: 'Erro ao atualizar dados do cliente', error: error.message });
+  }
+};
+export const obterClientePorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Buscando cliente com ID:', id);
+
+    const cliente = await Cliente.findByPk(id, {
+      attributes: ['id', 'nome', 'email', 'role', 'createdAt'],
+    });
+
+    if (!cliente) {
+      console.log('Cliente não encontrado:', id);
+      return res.status(404).json({ error: 'Cliente não encontrado.' });
+    }
+
+    console.log('Cliente encontrado:', cliente);
+    res.json(cliente);
+  } catch (err) {
+    console.error('Erro ao buscar cliente:', err.message);
+    res.status(500).json({ error: 'Erro no servidor.' });
+  }
+};
 // Listar Clientes (apenas admin)
 export const listarClientes = async (req, res) => {
     try {

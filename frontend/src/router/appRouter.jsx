@@ -16,12 +16,14 @@ import ChamadoNovo from "../pages/admin/chamados/ChamadoNovo";
 // Clientes
 import Clientes from "../pages/admin/clientes/Clientes";
 import ClienteNovo from "../pages/admin/clientes/NovoCliente";
+import EditarCliente from "../pages/admin/clientes/EditarCliente";
 
 // Técnicos
 import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
 import TecnicoDetalhado from "../pages/admin/tecnicos/TecnicoDetalhado";
 import TecnicoEditar from "../pages/admin/tecnicos/TecnicosEditar";
 import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
+
 
 // 🧩 Componente de proteção de rota
 const RotaProtegida = ({ children, adminOnly }) => {
@@ -100,6 +102,14 @@ function AppRoutes() {
           element={
             <RotaProtegida adminOnly>
               <ClienteNovo />
+            </RotaProtegida>
+          }
+        />
+        <Route
+          path="clientes/editar/:id"
+          element={
+            <RotaProtegida adminOnly>
+              <EditarCliente />
             </RotaProtegida>
           }
         />
