@@ -1,6 +1,6 @@
 // backend/models/admin/createAdmin.js
 import { conn } from "../../config/sequelize.js";
-import User from "../../UserModel.js";
+import User from "../UserModel.js";
 
 const createAdmin = async () => {
   try {

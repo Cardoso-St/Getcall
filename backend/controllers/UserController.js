@@ -1,42 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/UserModel.js';
+import {verifyToken} from '../middleware/verifyToken.js'
 
-// Middleware de autenticação JWT
-export const authMiddleware = (roles = []) => async (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) return res.status(401).json({ error: 'Acesso negado. Token não fornecido.' });
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        if (roles.length && !roles.includes(req.user.role)) {
-            return res.status(403).json({ error: 'Permissão insuficiente.' });
-        }
-        next();
-    } catch (err) {
-        res.status(400).json({ error: 'Token inválido.' });
-    }
-};
-
-export const verifyToken = async (req, res) => {
-    try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-
-        if (!token)
-            return res.status(401).json({ error: 'Token não fornecido' });
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ where: { email: decoded.email } });
-
-        if (!user)
-            return res.status(401).json({ error: 'Usuário não encontrado' });
-
-        res.json({ user: { email: user.email, role: user.role } });
-
-    } catch (err) {
-        res.status(401).json({ error: 'Token inválido' });
-    }
-};
 
 // Login COM JWT
 export const login = async (req, res) => {
