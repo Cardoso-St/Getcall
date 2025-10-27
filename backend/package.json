@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node backend/createAdmin.js && nodemon server.js",
+    "dev": "node models/admin/createAdmin.js && nodemon server.js",
+    "init:admin": "node models/admin/createAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
