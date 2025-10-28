@@ -40,6 +40,7 @@ const Sidebar = () => {
             </NavLink>
           </>
         )}
+        
       </nav>
 
       <div className="sidebar-cliente">
@@ -48,8 +49,9 @@ const Sidebar = () => {
           <p className="cliente-name">{cliente?.email}</p>
           <p className="cliente-email">{cliente?.role === 'admin' ? 'Administrador' : 'Cliente'}</p>
         </div>
-        <button onClick={logout} className="logout-btn">Sair</button>
+        
       </div>
+      <button onClick={logout} className="logout-btn">Sair</button>
     </div>
   );
 };

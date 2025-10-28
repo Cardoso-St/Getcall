@@ -127,6 +127,27 @@ export const obterClientePorId = async (req, res) => {
     res.status(500).json({ error: 'Erro no servidor.' });
   }
 };
+
+export const excluirCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Tentativa de excluir cliente com ID:', id);
+
+    const cliente = await Cliente.findByPk(id);
+    if (!cliente) {
+      console.log('Cliente não encontrado:', id);
+      return res.status(404).json({ error: 'Cliente não encontrado.' });
+    }
+
+    await cliente.destroy();
+    console.log('Cliente excluído com sucesso:', id);
+    return res.status(200).json({ message: 'Cliente excluído com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao excluir cliente:', error.message);
+    return res.status(500).json({ error: 'Erro ao excluir cliente.' });
+  }
+};
+
 // Listar Clientes (apenas admin)
 export const listarClientes = async (req, res) => {
     try {

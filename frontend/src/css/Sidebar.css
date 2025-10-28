@@ -28,6 +28,16 @@
   gap: 10px; /* espaço entre botões */
 }
 
+.logout-btn{
+  width: 100%;
+  background-color: #00e389;
+  color: black;
+  margin-top: 13px;
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
+  cursor: pointer;
+}
 /* Usuário no rodapé */
 .sidebar-cliente {
   margin-top: auto; /* empurra usuário para baixo */

@@ -14,7 +14,7 @@ const createAdmin = async () => {
     if (!admin) {
       // Cria o admin apenas se não existir
       await Cliente.create({
-        nome: 'ADEMIR SUPREMO RSRSRS',
+        nome: 'Admin',
         email: "admin@test.com",
         senha: "admin123",
         role: "admin",

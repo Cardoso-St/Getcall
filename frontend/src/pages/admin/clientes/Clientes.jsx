@@ -49,23 +49,22 @@ const Clientes = () => {
     navigate(`/app/clientes/editar/${id}`);
   };
 
-  const handleDeleteClick = (id) => {
-    if (window.confirm("Tem certeza que deseja excluir este cliente?")) {
-      const token = localStorage.getItem("token");
-      axios
-        .delete(`http://localhost:5000/api/clientes/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(() => {
-          console.log("Clientes recebidos:", res.data)
-          setClientes(clientes.filter((c) => c.id !== id));
-        })
-        .catch((err) => {
-          alert("Erro ao excluir cliente.");
-          console.error(err);
-        });
-    }
-  };
+ const handleDeleteClick = (id) => {
+  if (window.confirm("Tem certeza que deseja excluir este cliente?")) {
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`http://localhost:5000/api/clientes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        setClientes(clientes.filter((c) => c.id !== id));
+      })
+      .catch((err) => {
+        alert("Erro ao excluir cliente.");
+        console.error(err);
+      });
+  }
+};
 
   return (
     <div className="clientes-container">
