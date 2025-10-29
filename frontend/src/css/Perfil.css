@@ -1,3 +1,4 @@
+/* Container principal */
 .perfil-container {
   display: flex;
   justify-content: center;
@@ -8,12 +9,14 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Caixa do perfil */
 .perfil-box {
   background: white;
   border-radius: 10px;
   padding: 2rem;
-  width: 400px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  width: 430px;
+  height: 480px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .perfil-box h2 {
@@ -21,14 +24,17 @@
   color: #1E2024;
 }
 
+/* Formulário */
 form label {
   display: block;
+  transform: translateY(-30px);
   margin-bottom: 0.3rem;
   font-weight: 600;
   color: #333;
 }
 
 form input {
+  transform: translateY(-30px);
   width: 100%;
   padding: 0.5rem 0.8rem;
   margin-bottom: 1.2rem;
@@ -43,6 +49,7 @@ form input:focus {
   outline: none;
 }
 
+/* Campos de senha desabilitados */
 .senha-container {
   display: flex;
   gap: 1rem;
@@ -55,11 +62,13 @@ form input:focus {
   color: #555;
 }
 
+/* Botões */
 .btn-alterar-senha {
   background-color: #858B99;
   border: none;
   color: white;
-  height: 40px;
+  height: 38px;
+  transform: translateY(-30px);
   font-weight: 700;
   padding: 0 1rem;
   border-radius: 5px;
@@ -77,6 +86,7 @@ form input:focus {
   background-color: #1E2024;
   color: white;
   font-weight: 700;
+  transform: translateY(-20px);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -87,7 +97,7 @@ form input:focus {
   background-color: #00332b;
 }
 
-
+/* Modal de senha */
 .modal-senha-overlay {
   position: fixed;
   top: 0;
@@ -105,25 +115,24 @@ form input:focus {
   background: white;
   border-radius: 10px;
   padding: 2rem;
-  width: 320px;
+  height: 420px;
+  width: 446px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .modal-senha h3 {
-  margin-bottom: 1rem;
-  color: #004d40;
-  text-align: center;
+  transform: translateY(-40px);
+  margin-left: 40px;
+  color: #1E2024; /* Corrigido, faltava # */
 }
 
 .modal-senha label {
   font-weight: 600;
-  margin-top: 1rem;
 }
 
 .modal-buttons {
   margin-top: 1.5rem;
   display: flex;
-  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -134,6 +143,7 @@ form input:focus {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transform: translateY(-20px);
   transition: background-color 0.3s;
 }
 
@@ -141,7 +151,7 @@ form input:focus {
   background: #aaa;
 }
 
-
+/* Responsivo */
 @media (max-width: 480px) {
   .perfil-box {
     width: 100%;
@@ -152,7 +162,72 @@ form input:focus {
     width: 90%;
   }
 }
-.sub{
+
+/* Ajustes menores */
+.sub {
   transform: translateY(-10px);
-  width: 100%
+  width: 100%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.icon-voltar,
+.icon-fechar {
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.icon-voltar:hover,
+.icon-fechar:hover {
+  color: #008e61;
+}
+
+/* Imagem de perfil */
+.image-preview {
+  width: 70px;
+  height: 70px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  transform: translateY(-25px);
+  border: 1.5px solid #ccc;
+}
+
+.image-upload-container input[type="file"] {
+  width: 70px;
+  height: 70px;
+  transform: translateY(-24px);
+  margin-bottom: 3px;
+  border-radius: 50%;
+}
+
+.sub1 {
+  font-size: 15px;
+  margin-left: 80px;
+  transform: translateY(18px);
+}
+
+.btn-remove-image {
+  transform: translateY(-60px);
+  margin-left: 170px;
+  border: 1px solid black;
+  width: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-remove-image:hover {
+  background-color: rgba(130, 133, 132, 0.56);
+}
+
+.sub2 {
+   
 }
