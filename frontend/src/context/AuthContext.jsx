@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             const res = await axios.post('http://localhost:5000/api/clientes/login', { email, senha });
             localStorage.setItem('token', res.data.token);
             setCliente(res.data.cliente);
-            navigate('/app/clientes');
+            navigate('/app/chamados');
             return { success: true };
         } catch (err) {
             const errorMsg = err.response?.data?.error || 'Erro ao fazer login';
