@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../css/admin/chamados/Chamados.css";
 import PageHeader from "../../../components/PageHeader";
@@ -5,28 +6,38 @@ import ActionButton from "../../../components/ActionButton";
 
 const Chamados = () => {
   const navigate = useNavigate();
+  const [chamados, setChamados] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Função chamada ao clicar na linha
-  const handleRowClick = (id) => {
-    navigate(`/app/chamado/${id}`);
-  };
+  // 🔹 Busca os chamados do backend
+  useEffect(() => {
+    const fetchChamados = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/chamados");
+        const data = await response.json();
+        setChamados(data);
+      } catch (error) {
+        console.error("Erro ao buscar chamados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Função de editar
-  const handleEditClick = (id) => {
-    navigate(`/app/chamado/editar/${id}`);
-  };
+    fetchChamados();
+  }, []);
 
-  // Função de deletar
-  const handleDeleteClick = (id) => {
-    console.log(`Excluir chamado ${id}`);
-  };
+  const handleRowClick = (id) => navigate(`/app/chamado/${id}`);
+  const handleEditClick = (id) => navigate(`/app/chamado/editar/${id}`);
+  const handleDeleteClick = (id) => console.log(`Excluir chamado ${id}`);
+
+  if (loading) return <p>Carregando chamados...</p>;
 
   return (
     <div className="chamados-container">
       {/* Cabeçalho */}
       <PageHeader
         title="Chamados"
-        onNewClick={() => navigate("/app/chamado/novo")} // ✅ aqui
+        onNewClick={() => navigate("/app/chamado/novo")}
       />
 
       {/* Tabela principal */}
@@ -34,8 +45,8 @@ const Chamados = () => {
         <thead>
           <tr>
             <th>Atualizado em</th>
-            <th>Id</th>
-            <th>Título e Serviço</th>
+            <th>ID</th>
+            <th>Título e Descrição</th>
             <th>Cliente</th>
             <th>Técnico</th>
             <th>Status</th>
@@ -43,38 +54,60 @@ const Chamados = () => {
           </tr>
         </thead>
         <tbody>
-          <tr onClick={() => handleRowClick("00004")} className="chamado-row">
-            <td>12/04/25 20:56</td>
-            <td>00004</td>
-            <td>
-              <strong>Backup não está funcionando</strong>
-              <br />
-              Recuperação de Dados
-            </td>
-            <td>André Costa</td>
-            <td>Carlos Silva</td>
-            <td>
-              <span className="status aberto">Aberto</span>
-            </td>
-            <td style={{ display: "flex", gap: "6px" }}>
-              <ActionButton
-                type="delete"
-                title="Excluir chamado"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteClick("00004");
-                }}
-              />
-              <ActionButton
-                type="edit"
-                title="Editar chamado"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEditClick("00004");
-                }}
-              />
-            </td>
-          </tr>
+          {chamados.length === 0 ? (
+            <tr>
+              <td colSpan="7" style={{ textAlign: "center" }}>
+                Nenhum chamado encontrado.
+              </td>
+            </tr>
+          ) : (
+            chamados.map((chamado) => (
+              <tr
+                key={chamado.id}
+                onClick={() => handleRowClick(chamado.id)}
+                className="chamado-row"
+              >
+                <td>
+                  {new Date(chamado.updatedAt).toLocaleString("pt-BR", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })}
+                </td>
+                <td>{chamado.id.slice(0, 6)}</td>
+                <td>
+                  <strong>{chamado.nome}</strong>
+                  <br />
+                  {chamado.descricao}
+                </td>
+                <td>{chamado.cliente?.nome || "—"}</td>
+                <td>{chamado.tecnico?.nome || "—"}</td>{" "}
+                {/* 🔹 Técnico (ainda opcional) */}
+                <td>
+                  <span className={`status ${chamado.status.toLowerCase()}`}>
+                    {chamado.status}
+                  </span>
+                </td>
+                <td style={{ display: "flex", gap: "6px" }}>
+                  <ActionButton
+                    type="delete"
+                    title="Excluir chamado"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(chamado.id);
+                    }}
+                  />
+                  <ActionButton
+                    type="edit"
+                    title="Editar chamado"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditClick(chamado.id);
+                    }}
+                  />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

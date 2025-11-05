@@ -27,7 +27,7 @@ export const criarChamado = async (req, res) => {
       nome,
       descricao,
       categoria,
-      status,
+      status: status || "Aberto",
       cliente_id,
     });
 
@@ -50,4 +50,23 @@ export const criarChamado = async (req, res) => {
   }
 };
 
+/**
+ * Listar todos os chamados com seus respectivos clientes
+ */
+export const listarChamados = async (req, res) => {
+  try {
+    const chamados = await ChamadoModel.findAll({
+      include: {
+        model: ClienteModel,
+        as: "cliente",
+        attributes: ["id", "nome", "email"],
+      },
+      order: [["createdAt", "DESC"]],
+    });
 
+    res.status(200).json(chamados);
+  } catch (err) {
+    console.error("Erro ao listar chamados:", err);
+    res.status(500).json({ error: "Erro no servidor ao listar chamados." });
+  }
+};
