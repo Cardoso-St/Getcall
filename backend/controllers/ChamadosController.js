@@ -1,4 +1,4 @@
-import { ChamadoModel, ClienteModel} from "../models/Relacionamentos.js";
+import { ChamadoModel, ClienteModel } from "../models/Relacionamentos.js";
 
 /**
  * Criar um novo chamado
@@ -8,7 +8,6 @@ export const criarChamado = async (req, res) => {
   const { nome, descricao, categoria, status, cliente_id } = req.body;
 
   try {
-
     // 🔍 Verifica campos obrigatórios
     if (!nome || !descricao || !categoria || !cliente_id) {
       return res
@@ -68,5 +67,34 @@ export const listarChamados = async (req, res) => {
   } catch (err) {
     console.error("Erro ao listar chamados:", err);
     res.status(500).json({ error: "Erro no servidor ao listar chamados." });
+  }
+};
+
+export const listaChamadoPorId = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: "ID inválido." });
+  }
+  
+  try {
+    const chamado = await ChamadoModel.findByPk(id, {
+      include: {
+        model: ClienteModel,
+        as: "cliente",
+        attributes: ["id", "nome", "email"],
+      },
+    });
+
+    if (!chamado) {
+      return res.status(404).json({ error: "Chamado não encontrado" });
+    }
+
+    res.status(200).json(chamado);
+  } catch (error) {
+    console.error("Erro ao buscar chamado por ID:", error);
+    res.status(500).json({ error: "Erro ao buscar o chamado" });
   }
 };
