@@ -1,6 +1,5 @@
-// src/models/index.js
-import ClienteModel from "./ChamadosModel.js";
-import ChamadoModel from "./ChamadoModel.js";
+import ClienteModel from "./ClienteModel.js";
+import ChamadoModel from "./ChamadosModel.js";
 
 // Relacionamentos
 ClienteModel.hasMany(ChamadoModel, {
