@@ -28,7 +28,7 @@ const connectDB = async () => {
     await conn.authenticate();
     console.log("Banco de dados conectado 🍆");
     // 🔁 Sincroniza os modelos com o banco (sem apagar dados)
-    await conn.sync({ alter: true });
+    await conn.sync({ alter : true });
     console.log("Modelos sincronizados ✅");
   } catch (error) {
     console.error("Erro ao conectar ao banco:", error);

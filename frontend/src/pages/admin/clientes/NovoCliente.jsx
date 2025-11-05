@@ -114,19 +114,6 @@ const ClienteNovo = () => {
             <small>Mínimo de 6 dígitos</small>
           </div>
 
-          {/* CAMPO ROLE – ADICIONADO DO BACKEND */}
-          <div className="form-group">
-            <label htmlFor="role">Função</label>
-            <select
-              id="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="cliente">Cliente</option>
-              <option value="admin">Administrador</option>
-            </select>
-          </div>
-
           <div className="form-actions">
             <button
               type="button"

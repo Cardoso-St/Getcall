@@ -25,7 +25,7 @@ const Cliente = conn.define('Cliente', {
         allowNull: false,
     },
     role: {
-        type: DataTypes.ENUM('admin', 'cliente'),
+        type: DataTypes.ENUM('admin', 'cliente', 'tecnico'),
         defaultValue: 'cliente',
     },
     createdAt: {
