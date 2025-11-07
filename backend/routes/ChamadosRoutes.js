@@ -2,7 +2,8 @@ import express from "express";
 import {
   criarChamado,
   listarChamados,
-  listaChamadoPorId
+  listaChamadoPorId,
+  editarChamados
 } from "../controllers/ChamadosController.js";
 
 const router = express.Router();
@@ -15,4 +16,8 @@ router.get("/", listarChamados);
 
 // GET /api/chamados → Buscar o chamado
 router.get("/:id", listaChamadoPorId);
+
+// PUT /api/chamados → Editar o chamado
+router.put("/:id", editarChamados);
+
 export default router;

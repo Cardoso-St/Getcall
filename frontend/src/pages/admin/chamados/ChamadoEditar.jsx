@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../../../css/admin/chamados/ChamadoEditar.css"
+import "../../../css/admin/chamados/ChamadoEditar.css";
 import PageHeader from "../../../components/PageHeader";
 
 const EditarChamado = () => {
@@ -8,60 +8,90 @@ const EditarChamado = () => {
   const navigate = useNavigate();
 
   const [chamado, setChamado] = useState({
-    titulo: "",
-    servico: "",
+    nome: "",
     descricao: "",
     categoria: "",
-    cliente: "",
-    tecnico: "",
-    status: "aberto",
+    status: "Aberto",
   });
 
-  // Simula busca de dados do chamado
+  const [loading, setLoading] = useState(true);
+
+  // 🔹 Buscar chamado por ID
   useEffect(() => {
-    setChamado({
-      titulo: "Backup não está funcionando",
-      servico: "Recuperação de Dados",
-      descricao:
-        "O sistema de backup automático parou de funcionar. Última execução bem-sucedida foi há uma semana.",
-      categoria: "Recuperação de Dados",
-      cliente: "André Costa",
-      tecnico: "Carlos Silva",
-      status: "aberto",
-    });
+    const fetchChamado = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/chamados/${id}`
+        );
+        if (!response.ok) throw new Error("Erro ao buscar chamado.");
+
+        const data = await response.json();
+        setChamado({
+          nome: data.nome || "",
+          descricao: data.descricao || "",
+          categoria: data.categoria || "",
+          status: data.status || "Aberto",
+        });
+      } catch (error) {
+        console.error("Erro ao carregar chamado:", error);
+        alert("Erro ao carregar o chamado.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChamado();
   }, [id]);
 
+  // 🔹 Atualizar o estado
   const handleChange = (e) => {
     setChamado({ ...chamado, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    console.log("Chamado salvo:", chamado);
-    navigate("/app/chamados");
+  // 🔹 Salvar alterações
+  const handleSave = async () => {
+    if (!chamado.nome || !chamado.descricao || !chamado.categoria) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/chamados/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(chamado),
+      });
+
+      if (!response.ok) {
+        const erro = await response.json();
+        throw new Error(erro.error || "Erro ao salvar alterações.");
+      }
+
+      alert("Chamado atualizado com sucesso!");
+      navigate("/app/chamados");
+    } catch (error) {
+      console.error("Erro ao editar chamado:", error);
+      alert(error.message || "Erro ao salvar o chamado.");
+    }
   };
+
+  if (loading) {
+    return <div className="editar-container">Carregando chamado...</div>;
+  }
 
   return (
     <div className="editar-container">
-      <PageHeader title={`Editar Chamado ${id}`} onNewClick={null} />
+      <PageHeader title={`Editar Chamado #${id}`} />
 
       <form className="editar-form">
         <label>
-          Título:
+          Nome do Chamado:
           <input
             type="text"
-            name="titulo"
-            value={chamado.titulo}
+            name="nome"
+            value={chamado.nome}
             onChange={handleChange}
-          />
-        </label>
-
-        <label>
-          Serviço:
-          <input
-            type="text"
-            name="servico"
-            value={chamado.servico}
-            onChange={handleChange}
+            placeholder="Digite o título do chamado"
           />
         </label>
 
@@ -72,45 +102,39 @@ const EditarChamado = () => {
             value={chamado.descricao}
             onChange={handleChange}
             rows={4}
+            placeholder="Descreva o problema"
           />
         </label>
 
         <label>
           Categoria:
-          <input
-            type="text"
+          <select
             name="categoria"
             value={chamado.categoria}
             onChange={handleChange}
-          />
-        </label>
-
-        <label>
-          Cliente:
-          <input
-            type="text"
-            name="cliente"
-            value={chamado.cliente}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label>
-          Técnico:
-          <input
-            type="text"
-            name="tecnico"
-            value={chamado.tecnico}
-            onChange={handleChange}
-          />
+          >
+            <option value="">Selecione uma categoria</option>
+            <option value="Rede">Rede</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Software">Software</option>
+            <option value="Suporte Técnico">Suporte Técnico</option>
+            <option value="Acesso ao Sistema">Acesso ao Sistema</option>
+            <option value="Backup">Backup</option>
+            <option value="Impressora">Impressora</option>
+            <option value="Segurança da Informação">
+              Segurança da Informação
+            </option>
+            <option value="Infraestrutura">Infraestrutura</option>
+            <option value="Outro">Outro</option>
+          </select>
         </label>
 
         <label>
           Status:
           <select name="status" value={chamado.status} onChange={handleChange}>
-            <option value="aberto">Aberto</option>
-            <option value="andamento">Em Andamento</option>
-            <option value="encerrado">Encerrado</option>
+            <option value="Aberto">Aberto</option>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Encerrado">Encerrado</option>
           </select>
         </label>
 
