@@ -38,7 +38,7 @@ const connectDB = async () => {
     console.log("✅ Conectado com sucesso.");
 
     // 🔁 Sincroniza todos os modelos
-    await conn.sync({ alter: true });
+    await conn.sync({});
     console.log("📦 Modelos sincronizados com o banco.");
 
     // 🧑‍💼 Criação automática do admin, se não existir

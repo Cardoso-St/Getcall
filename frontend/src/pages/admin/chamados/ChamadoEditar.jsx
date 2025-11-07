@@ -34,7 +34,6 @@ const EditarChamado = () => {
         });
       } catch (error) {
         console.error("Erro ao carregar chamado:", error);
-        alert("Erro ao carregar o chamado.");
       } finally {
         setLoading(false);
       }
@@ -43,7 +42,7 @@ const EditarChamado = () => {
     fetchChamado();
   }, [id]);
 
-  // 🔹 Atualizar o estado
+  // 🔹 Atualizar o estado do formulário
   const handleChange = (e) => {
     setChamado({ ...chamado, [e.target.name]: e.target.value });
   };
@@ -51,7 +50,7 @@ const EditarChamado = () => {
   // 🔹 Salvar alterações
   const handleSave = async () => {
     if (!chamado.nome || !chamado.descricao || !chamado.categoria) {
-      alert("Preencha todos os campos obrigatórios!");
+      console.warn("Preencha todos os campos obrigatórios!");
       return;
     }
 
@@ -67,11 +66,10 @@ const EditarChamado = () => {
         throw new Error(erro.error || "Erro ao salvar alterações.");
       }
 
-      alert("Chamado atualizado com sucesso!");
-      navigate("/app/chamados");
+      console.log("✅ Chamado atualizado com sucesso!");
+      navigate("/app/chamados"); // Redireciona sem alert
     } catch (error) {
       console.error("Erro ao editar chamado:", error);
-      alert(error.message || "Erro ao salvar o chamado.");
     }
   };
 

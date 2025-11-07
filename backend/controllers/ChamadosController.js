@@ -148,3 +148,26 @@ export const editarChamados = async (req, res) => {
     res.status(500).json({ error: "Erro no servidor ao editar chamado." });
   }
 };
+
+export const deletarChamado = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ error: "ID inválido." });
+  }
+
+  try {
+    const chamado = await ChamadoModel.findByPk(id);
+
+    if (!chamado) {
+      return res.status(404).json({ error: "Chamado não encontrado." });
+    }
+
+    await chamado.destroy(); // 🔥 Deleta o chamado do banco
+
+    res.status(200).json({ message: "Chamado deletado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao deletar chamado:", error);
+    res.status(500).json({ error: "Erro ao deletar o chamado." });
+  }
+};

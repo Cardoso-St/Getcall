@@ -84,6 +84,7 @@ export const criarCliente = async (req, res) => {
     res.status(500).json({ error: "Erro no servidor." });
   }
 };
+
 export const editarCliente = async (req, res) => {
   try {
     const { id } = req.params;
@@ -129,6 +130,7 @@ export const editarCliente = async (req, res) => {
       });
   }
 };
+
 export const obterClientePorId = async (req, res) => {
   try {
     const { id } = req.params;

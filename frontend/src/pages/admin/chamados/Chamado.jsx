@@ -9,11 +9,12 @@ const Chamados = () => {
   const [chamados, setChamados] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Busca os chamados do backend
+  // 🔹 Buscar todos os chamados
   useEffect(() => {
     const fetchChamados = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/chamados");
+        if (!response.ok) throw new Error("Erro ao buscar chamados.");
         const data = await response.json();
         setChamados(data);
       } catch (error) {
@@ -26,9 +27,38 @@ const Chamados = () => {
     fetchChamados();
   }, []);
 
+  // 🔹 Navegar para detalhes
   const handleRowClick = (id) => navigate(`/app/chamado/${id}`);
+
+  // 🔹 Editar chamado
   const handleEditClick = (id) => navigate(`/app/chamado/editar/${id}`);
-  const handleDeleteClick = (id) => console.log(`Excluir chamado ${id}`);
+
+  // 🔹 Deletar chamado
+  const handleDeleteClick = async (id) => {
+    const confirmar = window.confirm(
+      "Tem certeza que deseja excluir este chamado?"
+    );
+    if (!confirmar) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/chamados/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const erro = await response.json();
+        throw new Error(erro.error || "Erro ao excluir chamado.");
+      }
+
+      // Atualiza a lista sem o item excluído
+      setChamados((prevChamados) => prevChamados.filter((ch) => ch.id !== id));
+
+      console.log(`✅ Chamado ${id} excluído com sucesso`);
+    } catch (error) {
+      console.error("Erro ao excluir chamado:", error);
+      alert(error.message || "Erro ao excluir o chamado.");
+    }
+  };
 
   if (loading) return <p>Carregando chamados...</p>;
 
@@ -53,6 +83,7 @@ const Chamados = () => {
             <th>Ações</th>
           </tr>
         </thead>
+
         <tbody>
           {chamados.length === 0 ? (
             <tr>
@@ -80,8 +111,7 @@ const Chamados = () => {
                   {chamado.descricao}
                 </td>
                 <td>{chamado.cliente?.nome || "—"}</td>
-                <td>{chamado.tecnico?.nome || "—"}</td>{" "}
-                {/* 🔹 Técnico (ainda opcional) */}
+                <td>{chamado.tecnico?.nome || "—"}</td>
                 <td>
                   <span className={`status ${chamado.status.toLowerCase()}`}>
                     {chamado.status}

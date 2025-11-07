@@ -3,7 +3,8 @@ import {
   criarChamado,
   listarChamados,
   listaChamadoPorId,
-  editarChamados
+  editarChamados,
+  deletarChamado
 } from "../controllers/ChamadosController.js";
 
 const router = express.Router();
@@ -19,5 +20,8 @@ router.get("/:id", listaChamadoPorId);
 
 // PUT /api/chamados → Editar o chamado
 router.put("/:id", editarChamados);
+
+// DELETE /api/chamados → Deletar o chamado
+router.delete("/:id", deletarChamado);
 
 export default router;
