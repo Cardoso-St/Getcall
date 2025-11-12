@@ -44,6 +44,14 @@ const Chamados = conn.define("Chamados", {
       key: "id",
     },
   },
+  tecnico_id: {
+  type: DataTypes.INTEGER,
+  allowNull: true,
+  references: {
+    model: 'Tecnicos',
+    key: 'id'
+  }
+},
   // Caso queira ativar o relacionamento com técnicos futuramente
   // tecnico_id: {
   //   type: DataTypes.UUID,

@@ -1,5 +1,6 @@
 import { ChamadoModel, ClienteModel } from "../models/Relacionamentos.js";
-
+import { authMiddleware } from "../middleware/authMiddleware.js";
+import {TecnicoModel} from "../models/Relacionamentos.js";
 /**
  * Criar um novo chamado
  * (Clientes abrem chamados, e o retorno inclui os dados do cliente)
@@ -48,18 +49,59 @@ export const criarChamado = async (req, res) => {
     res.status(500).json({ error: "Erro no servidor ao criar o chamado." });
   }
 };
+export const atribuirChamado = async (req, res) => {
+  const { id } = req.params; // ID do chamado
+  const { tecnicoId } = req.body; // ID do técnico
 
+  try {
+    // 1. Busca o chamado
+    const chamado = await ChamadoModel.findByPk(id);
+    if (!chamado) {
+      return res.status(404).json({ error: "Chamado não encontrado" });
+    }
+
+    // 2. Verifica se já está atribuído
+    if (chamado.tecnico_id) {
+      return res.status(400).json({ error: "Chamado já está em atendimento" });
+    }
+
+    // 3. Verifica se o técnico existe
+    const tecnico = await TecnicoModel.findByPk(tecnicoId);
+    if (!tecnico) {
+      return res.status(404).json({ error: "Técnico não encontrado" });
+    }
+
+    // 4. Atribui e atualiza status
+    chamado.tecnico_id = tecnicoId;
+    chamado.status = "Em atendimento";
+    await chamado.save();
+
+    // 5. Retorna o chamado atualizado
+    const chamadoAtualizado = await ChamadoModel.findByPk(id, {
+      include: [
+        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] }
+      ]
+    });
+
+    res.json({
+      message: "Chamado iniciado com sucesso",
+      chamado: chamadoAtualizado
+    });
+  } catch (err) {
+    console.error("Erro ao atribuir chamado:", err);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+};
 /**
  * Listar todos os chamados com seus respectivos clientes
  */
 export const listarChamados = async (req, res) => {
   try {
     const chamados = await ChamadoModel.findAll({
-      include: {
-        model: ClienteModel,
-        as: "cliente",
-        attributes: ["id", "nome", "email"],
-      },
+      include: [
+        { model: ClienteModel, as: "cliente", attributes: ["id", "nome", "email"] },
+        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] } // ADICIONE
+      ],
       order: [["createdAt", "DESC"]],
     });
 

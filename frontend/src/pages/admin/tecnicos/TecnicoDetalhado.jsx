@@ -11,7 +11,7 @@ const TecnicoDetalhado = () => {
   const [tecnico, setTecnico] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+const [chamadosAtribuidos, setChamadosAtribuidos] = useState([]);
   // FUNÇÃO DENTRO DO COMPONENTE
   const formatarHorarios = (horarioObj) => {
     if (!horarioObj || typeof horarioObj !== "object") return "—";
@@ -27,21 +27,23 @@ const TecnicoDetalhado = () => {
   };
 
   useEffect(() => {
-    const carregarTecnico = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await api.get(`/tecnicos/${id}`);
-        setTecnico(res.data.tecnico);
-      } catch (err) {
-        setError(err.response?.data?.error || "Erro ao carregar técnico");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    carregarTecnico();
-  }, [id]);
+  const carregarDados = async () => {
+    try {
+      setLoading(true);
+      const [resTecnico, resChamados] = await Promise.all([
+        api.get(`/tecnicos/${id}`),
+        api.get(`/chamados?tecnico_id=${id}`)
+      ]);
+      setTecnico(resTecnico.data.tecnico);
+      setChamadosAtribuidos(resChamados.data);
+    } catch (err) {
+      setError(err.response?.data?.error || "Erro ao carregar dados");
+    } finally {
+      setLoading(false);
+    }
+  };
+  carregarDados();
+}, [id]);
 
   // LOADING
   if (loading) {
@@ -132,9 +134,23 @@ const TecnicoDetalhado = () => {
           </div>
 
           <div className="info-card">
-            <h4>Experiência</h4>
-            <p><strong>Chamados Atendidos:</strong> 0</p>
-            <p><strong>Projetos Realizados:</strong> —</p>
+            <div className="info-card">
+  <h4>Chamados Atribuídos</h4>
+  {chamadosAtribuidos.length === 0 ? (
+    <p>Nenhum chamado em andamento.</p>
+  ) : (
+    <ul className="chamados-lista">
+      {chamadosAtribuidos.map(c => (
+        <li key={c.id}>
+          <strong>{c.nome}</strong> - {c.status}
+          <br />
+          <small>Cliente: {c.cliente?.nome}</small>
+        </li>
+      ))}
+    </ul>
+  )}
+  <p><strong>Total:</strong> {chamadosAtribuidos.length}</p>
+</div>
           </div>
 
           <div className="info-card">

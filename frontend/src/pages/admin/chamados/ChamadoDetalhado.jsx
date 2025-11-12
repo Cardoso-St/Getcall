@@ -117,33 +117,38 @@ const ChamadoDetalhado = () => {
         </article>
 
         <aside className="tecnico-card">
-          <h4>Técnico responsável</h4>
-          {chamado.tecnico ? (
-            <div className="tecnico-info">
-              <div className="tecnico-avatar">{chamado.tecnico[0]}</div>
-              <div>
-                <p className="tecnico-nome">{chamado.tecnico}</p>
-              </div>
-            </div>
-          ) : (
-            <p>Nenhum técnico atribuído</p>
-          )}
+  <h4>Técnico responsável</h4>
+  {chamado.tecnico ? (
+    <div className="tecnico-info">
+      <div className="tecnico-avatar">
+        {chamado.tecnico.nome[0].toUpperCase()}
+      </div>
+      <div>
+        <p className="tecnico-nome">{chamado.tecnico.nome}</p>
+        <p className="tecnico-email">{chamado.tecnico.email || "—"}</p>
+      </div>
+    </div>
+  ) : (
+    <p>Nenhum técnico atribuído</p>
+  )}
 
-          <div className="botoes-status">
-            <button
-              className="btn andamento"
-              onClick={() => atualizarStatus("Em andamento")}
-            >
-              Em atendimento
-            </button>
-            <button
-              className="btn encerrado"
-              onClick={() => atualizarStatus("Encerrado")}
-            >
-              Encerrar
-            </button>
-          </div>
-        </aside>
+  <div className="botoes-status">
+    <button
+      className="btn andamento"
+      onClick={() => atualizarStatus("Em atendimento")}
+      disabled={chamado.status === "Em atendimento"}
+    >
+      Em atendimento
+    </button>
+    <button
+      className="btn encerrado"
+      onClick={() => atualizarStatus("Encerrado")}
+      disabled={chamado.status === "Encerrado"}
+    >
+      Encerrar
+    </button>
+  </div>
+</aside>
       </section>
     </main>
   );

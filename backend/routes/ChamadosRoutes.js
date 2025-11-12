@@ -4,9 +4,10 @@ import {
   listarChamados,
   listaChamadoPorId,
   editarChamados,
-  deletarChamado
+  deletarChamado,
+  atribuirChamado
 } from "../controllers/ChamadosController.js";
-
+import { authMiddleware } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // POST /api/chamados → cria um novo chamado
@@ -23,5 +24,5 @@ router.put("/:id", editarChamados);
 
 // DELETE /api/chamados → Deletar o chamado
 router.delete("/:id", deletarChamado);
-
+router.post("/:id/atribuir", authMiddleware(["tecnico"]), atribuirChamado)
 export default router;

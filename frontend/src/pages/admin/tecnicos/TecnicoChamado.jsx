@@ -18,9 +18,10 @@ const TecnicoChamados = () => {
     const carregar = async () => {
       try {
         const res = await api.get("/chamados");
-        setChamados(res.data);
+        setChamados(res.data); // já vem com cliente
       } catch (err) {
-        console.error(err);
+        console.error("Erro ao carregar chamados:", err);
+        alert("Erro ao carregar chamados");
       } finally {
         setLoading(false);
       }
@@ -34,15 +35,21 @@ const TecnicoChamados = () => {
         tecnicoId: cliente.id,
       });
 
+      // Atualiza localmente com dados do backend
       setChamados(prev =>
         prev.map(c =>
           c.id === chamadoId
-            ? { ...c, tecnico: { nome: cliente.nome }, status: "Em atendimento" }
+            ? {
+                ...c,
+                tecnico: { nome: cliente.nome },
+                status: "Em atendimento",
+              }
             : c
         )
       );
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao iniciar");
+      console.error("Erro ao iniciar:", err.response?.data);
+      alert(err.response?.data?.error || "Erro ao iniciar chamado");
     }
   };
 
@@ -50,13 +57,13 @@ const TecnicoChamados = () => {
     .filter(c => {
       if (filtro === "Todos") return true;
       if (filtro === "Abertos") return c.status === "Aberto";
-      if (filtro === "Pendentes") return c.status === "Em andamento";
+      if (filtro === "Pendentes") return c.status === "Em atendimento";
       if (filtro === "Fechados") return c.status === "Encerrado";
       return true;
     })
     .filter(c =>
-      c.nome.toLowerCase().includes(busca.toLowerCase()) ||
-      c.descricao.toLowerCase().includes(busca.toLowerCase())
+      (c.nome || "").toLowerCase().includes(busca.toLowerCase()) ||
+      (c.descricao || "").toLowerCase().includes(busca.toLowerCase())
     );
 
   if (loading) return <p>Carregando...</p>;
@@ -97,7 +104,7 @@ const TecnicoChamados = () => {
                   className="tecnico-edit-btn"
                   onClick={() => navigate(`/app/chamado/${chamado.id}`)}
                 >
-                  Editar
+                  Ver
                 </button>
               </div>
               <h3>{chamado.nome}</h3>
@@ -114,7 +121,7 @@ const TecnicoChamados = () => {
 
               <div className="tecnico-cliente-info">
                 <span className="tecnico-avatar">
-                  {chamado.cliente?.nome[0] || "?"}
+                  {chamado.cliente?.nome?.[0] || "?"}
                 </span>
                 <span>{chamado.cliente?.nome || "Cliente"}</span>
               </div>
@@ -122,21 +129,33 @@ const TecnicoChamados = () => {
               <div className="tecnico-status-actions">
                 <span
                   className={`tecnico-status-badge ${
-                    chamado.status === "Em andamento"
+                    chamado.status === "Em atendimento"
                       ? "em-atendimento"
-                      : chamado.status.toLowerCase().replace(" ", "-")
+                      : chamado.status === "Aberto"
+                      ? "aberto"
+                      : chamado.status === "Encerrado"
+                      ? "encerrado"
+                      : ""
                   }`}
                 >
-                  {chamado.status === "Em atendimento" ? "Em atendimento" : chamado.status}
+                  {chamado.status}
                 </span>
 
-                {!chamado.tecnico && chamado.status !== "Encerrado" && (
+                {/* BOTÃO INICIAR */}
+                {!chamado.tecnico && chamado.status === "Aberto" && (
                   <button
                     className="tecnico-btn-iniciar"
                     onClick={() => iniciarChamado(chamado.id)}
                   >
                     Iniciar
                   </button>
+                )}
+
+                {/* TÉCNICO ATRIBUÍDO */}
+                {chamado.tecnico && (
+                  <span className="tecnico-atribuido">
+                    Atribuído a: {chamado.tecnico.nome}
+                  </span>
                 )}
               </div>
             </div>

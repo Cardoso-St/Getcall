@@ -1,3 +1,4 @@
+// models/index.js (ou onde estão os relacionamentos)
 import ClienteModel from "./ClienteModel.js";
 import ChamadoModel from "./ChamadosModel.js";
 import TecnicoModel from "./TecnicosModel.js";
@@ -18,4 +19,10 @@ ChamadoModel.belongsTo(ClienteModel, {
   as: "cliente",
 });
 
-export { ClienteModel, ChamadoModel };
+// ADICIONE ESTE:
+ChamadoModel.belongsTo(TecnicoModel, {
+  foreignKey: "tecnico_id",
+  as: "tecnico",
+});
+
+export { ClienteModel, ChamadoModel, TecnicoModel };
