@@ -6,7 +6,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import "../../../css/admin/tecnicos/Tecnicos.css";
 import PageHeader from "../../../components/PageHeader.jsx";
 import ActionButton from "../../../components/ActionButton.jsx";
-
+import api from "../../../services/api";
 const Tecnicos = () => {
   const navigate = useNavigate();
   const { cliente } = useContext(AuthContext);
@@ -20,28 +20,33 @@ const Tecnicos = () => {
     return <p style={{ color: "red", textAlign: "center" }}>Acesso negado.</p>;
   }
 
-  useEffect(() => {
-    const carregarTecnicos = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("Token não encontrado.");
+ useEffect(() => {
+  const carregarTecnicos = async () => {
+    try {
+      setLoading(true);
+      setErro("");
 
-        const res = await axios.get("http://localhost:5000/api/tecnicos", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const res = await api.get("/tecnicos");
+      
+      // DEBUG: Veja o que chegou
+      console.log("DADOS RECEBIDOS DA API:", res.data);
 
-        setTecnicos(res.data);
-        setErro("");
-      } catch (err) {
-        const msg = err.response?.data?.error || "Erro ao carregar técnicos.";
-        setErro(msg);
-      } finally {
-        setLoading(false);
-      }
-    };
+      // ACEITA: array direto OU { tecnicos: [...] }
+      const lista = Array.isArray(res.data) 
+        ? res.data 
+        : res.data.tecnicos || [];
 
-    carregarTecnicos();
-  }, []);
+      setTecnicos(lista);
+    } catch (err) {
+      console.error("ERRO NA API:", err);
+      setErro(err.response?.data?.error || "Erro ao carregar técnicos");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  carregarTecnicos();
+}, []);
 
   const handleRowClick = (id) => {
     navigate(`/app/tecnicos/${id}`);
@@ -73,10 +78,14 @@ const formatarHorarios = (horarioObj) => {
   if (!horarioObj || typeof horarioObj !== 'object') {
     return "—";
   }
-  return Object.values(horarioObj)
+
+  const horarios = Object.values(horarioObj)
     .flat()
-    .sort()
-    .join(" ") || "—";
+    .filter(h => h && typeof h === 'string')
+    .map(h => h.trim())
+    .filter(Boolean);
+
+  return horarios.length > 0 ? horarios.sort().join(" ") : "—";
 };
 
   if (loading) return <div className="loading">Carregando técnicos...</div>;

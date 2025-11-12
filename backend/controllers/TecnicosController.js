@@ -182,7 +182,7 @@ export const excluirTecnico = async (req, res) => {
 export const listarTecnicos = async (req, res) => {
   try {
     const tecnicos = await Tecnico.findAll({
-      attributes: ["id", "nome", "email", "telefone", "formacao", "especialidade", "role", "createdAt"],
+      attributes: ["id", "nome", "email", "telefone", "formacao", "especialidade", "horarioDeAtendimento", "role", "createdAt"],
     });
     res.json(tecnicos);
   } catch (err) {
