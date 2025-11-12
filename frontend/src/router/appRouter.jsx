@@ -31,9 +31,13 @@ const RotaProtegida = ({ children, adminOnly }) => {
 
   if (loading) return <div>Carregando...</div>;
   if (!cliente) return <Navigate to="/login" />;
-  if (adminOnly && cliente.role !== "admin")
-    return <Navigate to="/app/chamados" />;
 
+  // Admin só para role "admin"
+  if (adminOnly && cliente.role !== "admin") {
+    return <Navigate to="/app/chamados" />;
+  }
+
+  // Técnicos podem ver chamados
   return children;
 };
 

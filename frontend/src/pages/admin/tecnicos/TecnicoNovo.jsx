@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+// pages/admin/tecnicos/TecnicoNovo.jsx
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../../context/AuthContext";
+import api from '../../../services/api'
 import "../../../css/admin/tecnicos/TecnicoNovo.css";
 
 const TecnicosNovo = () => {
   const navigate = useNavigate();
+  const { cliente } = useContext(AuthContext);
 
-  // Estados principais
-  const [step, setStep] = useState(1); // 🔹 controla a etapa do formulário
+  // Estados do formulário
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [formacao, setFormacao] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [formacao, setFormacao] = useState("");
   const [especialidade, setEspecialidade] = useState("");
   const [horariosSelecionados, setHorariosSelecionados] = useState({
     manha: [],
@@ -19,7 +23,20 @@ const TecnicosNovo = () => {
     noite: [],
   });
 
-  const handleCancel = () => navigate(-1);
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  // Proteção: só admin
+  if (cliente?.role !== "admin") {
+    return <p style={{ color: "red", textAlign: "center" }}>Acesso negado.</p>;
+  }
+
+  const timeSlots = [
+    "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
+    "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
+    "19:00", "20:00", "21:00", "22:00", "23:00"
+  ];
 
   const toggleHorario = (periodo, horario) => {
     setHorariosSelecionados((prev) => {
@@ -34,65 +51,51 @@ const TecnicosNovo = () => {
   };
 
   const handleNext = () => {
-    // Validação rápida antes de avançar
     if (!nome || !email || !senha || !telefone) {
-      alert("Por favor, preencha todos os campos antes de continuar.");
+      setMessage("Preencha todos os campos obrigatórios.");
       return;
     }
+    setMessage("");
     setStep(2);
   };
 
-  const handleSave = () => {
-    const todosHorarios =
-      [
-        ...horariosSelecionados.manha,
-        ...horariosSelecionados.tarde,
-        ...horariosSelecionados.noite,
-      ].join(" ") + " -4";
+  const handleSave = async () => {
+    setLoading(true);
+    setMessage("");
 
-    console.log("Técnico salvo:", {
-      nome,
-      email,
-      senha,
-      formacao,
-      telefone,
-      especialidade,
-      disponibilidade: todosHorarios,
-    });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token não encontrado.");
 
-    alert("Técnico salvo com sucesso!");
-    navigate("/app/tecnicos");
+      await api.post("/tecnicos", {
+  nome,
+  email,
+  senha,
+  telefone,
+  formacao,
+  especialidade,
+  horarioDeAtendimento: horariosSelecionados,
+});
+
+      setMessage("Técnico criado com sucesso!");
+      setTimeout(() => navigate("/app/tecnicos"), 1200);
+    } catch (err) {
+      const erro = err.response?.data?.error || "Erro ao criar técnico.";
+      setMessage(`Erro: ${erro}`);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const timeSlots = [
-    "07:00",
-    "08:00",
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-    "23:00",
-  ];
 
   return (
     <main className="tecnico-novo-container">
-      <button className="voltarBotaoTeste" onClick={handleCancel}>
+      <button className="voltarBotaoTeste" onClick={() => navigate(-1)}>
         ← Voltar
       </button>
       <h2 className="titulo">Cadastro de Técnico</h2>
 
       <div className="tecnico-form-card">
-        {/* ===== ETAPA 1 - DADOS PESSOAIS ===== */}
+        {/* ETAPA 1 */}
         {step === 1 && (
           <>
             <section className="form-header">
@@ -100,99 +103,92 @@ const TecnicosNovo = () => {
               <p>Preencha as informações básicas do técnico</p>
             </section>
 
-            <form className="tecnico-form">
+            <div className="tecnico-form">
               <div className="form-group">
-                <label htmlFor="nome">Nome</label>
+                <label>Nome</label>
                 <input
-                  id="nome"
                   type="text"
-                  placeholder="Nome completo"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
+                  placeholder="Nome completo"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">E-mail</label>
+                <label>E-mail</label>
                 <input
-                  id="email"
                   type="email"
-                  placeholder="exemplo@mail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder="exemplo@mail.com"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="telefone">Telefone</label>
+                <label>Telefone</label>
                 <input
-                  id="telefone"
                   type="tel"
-                  placeholder="(11) 99999-9999"
                   value={telefone}
                   onChange={(e) => setTelefone(e.target.value)}
+                  placeholder="(11) 99999-9999"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="senha">Senha</label>
+                <label>Senha</label>
                 <input
-                  id="senha"
                   type="password"
-                  placeholder="Defina a senha de acesso"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
+                  placeholder="Mínimo 6 caracteres"
                 />
-                <small>Mínimo de 6 dígitos</small>
               </div>
-            </form>
+            </div>
 
             <div className="form-actions">
-              <button className="btn-cancelar" onClick={handleCancel}>
+              <button className="btn-cancelar" onClick={() => navigate(-1)} disabled={loading}>
                 Cancelar
               </button>
-              <button className="btn-salvar" onClick={handleNext}>
+              <button className="btn-salvar" onClick={handleNext} disabled={loading}>
                 Continuar →
               </button>
             </div>
           </>
         )}
 
-        {/* ===== ETAPA 2 - FORMAÇÃO E HORÁRIOS ===== */}
+        {/* ETAPA 2 */}
         {step === 2 && (
           <>
             <section className="form-header">
-              <h3>Formação profissional</h3>
-              <p>Defina a formação acadêmica e especialização do técnico</p>
+              <h3>Formação e horários</h3>
+              <p>Defina formação, especialidade e disponibilidade</p>
             </section>
 
-            <form className="tecnico-form">
+            <div className="tecnico-form">
               <div className="form-group">
-                <label htmlFor="formacao">Formação</label>
+                <label>Formação</label>
                 <input
-                  id="formacao"
                   type="text"
-                  placeholder="Ex: Técnico em Eletrônica"
                   value={formacao}
                   onChange={(e) => setFormacao(e.target.value)}
+                  placeholder="Ex: Técnico em Informática"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="especialidade">Especialidade</label>
+                <label>Especialidade</label>
                 <input
-                  id="especialidade"
                   type="text"
-                  placeholder="Ex: Redes, Automação, Refrigeração"
                   value={especialidade}
                   onChange={(e) => setEspecialidade(e.target.value)}
+                  placeholder="Ex: Redes, Suporte"
                 />
               </div>
-            </form>
+            </div>
 
             <section className="form-header">
               <h3>Horário de atendimento</h3>
-              <p>Selecione os horários de disponibilidade do técnico</p>
+              <p>Selecione os horários de disponibilidade</p>
             </section>
 
             <div className="horarios-container">
@@ -246,14 +242,28 @@ const TecnicosNovo = () => {
             </div>
 
             <div className="form-actions">
-              <button className="btn-cancelar" onClick={() => setStep(1)}>
+              <button className="btn-cancelar" onClick={() => setStep(1)} disabled={loading}>
                 ← Voltar
               </button>
-              <button className="btn-salvar" onClick={handleSave}>
-                Salvar
+              <button className="btn-salvar" onClick={handleSave} disabled={loading}>
+                {loading ? "Salvando..." : "Salvar Técnico"}
               </button>
             </div>
           </>
+        )}
+
+        {/* Mensagem de feedback */}
+        {message && (
+          <p
+            style={{
+              marginTop: "12px",
+              textAlign: "center",
+              color: message.includes("sucesso") ? "green" : "red",
+              fontWeight: "500",
+            }}
+          >
+            {message}
+          </p>
         )}
       </div>
     </main>

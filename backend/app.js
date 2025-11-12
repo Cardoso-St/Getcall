@@ -10,8 +10,9 @@ import Chamado from "./models/ChamadosModel.js";
 
 // 🔌 Rotas
 import ClientesRoutes from "./routes/ClientesRoutes.js";
+import TecnicosRoutes from "./routes/TecnicosRoutes.js";
 import ChamadosRoutes from "./routes/ChamadosRoutes.js";
-
+import { verifyToken } from "./middleware/verifyToken.js";
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,11 @@ app.use(express.json());
 // ✅ Rotas
 app.use("/api/clientes", ClientesRoutes);
 app.use("/api/chamados", ChamadosRoutes);
+app.use("/api/tecnicos", TecnicosRoutes);
+
+app.get("/api/verify-token", verifyToken, (req, res) => {
+  res.json({ cliente: req.cliente }); // ← retorna o usuário
+});
 
 // 🚀 Conecta e sincroniza o banco
 const connectDB = async () => {

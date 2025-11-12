@@ -1,60 +1,69 @@
+// src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
+// 1. Cria o contexto
 export const AuthContext = createContext();
 
+// 2. Componente Provider
 export const AuthProvider = ({ children }) => {
-    const [cliente, setCliente] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const navigate = useNavigate();
+  const [cliente, setCliente] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            axios
-                .get('http://localhost:5000/api/clientes/verify-token', {
-                    headers: { Authorization: `Bearer ${token}` },
-                })
-                .then((res) => {
-                    setCliente(res.data.cliente);
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    localStorage.removeItem('token');
-                    setLoading(false);
-                    navigate('/login');
-                });
-        } else {
-            setLoading(false);
-        }
-    }, [navigate]);
+  // useEffect e login aqui (igual antes)
 
-    const login = async (email, senha) => {
-        setError(null);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.get('/verify-token')
+        .then(res => setCliente(res.data.cliente))
+        .catch(() => {
+          localStorage.removeItem('token');
+          navigate('/login');
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [navigate]);
+
+  const login = async (email, senha) => {
+    try {
+      const res = await api.post('/clientes/login', { email, senha });
+      localStorage.setItem('token', res.data.token);
+      setCliente(res.data.cliente);
+      return { success: true };
+    } catch (err) {
+      const errorMsg = err.response?.data?.error;
+      if (errorMsg === "E-mail ou senha inválidos.") {
         try {
-            const res = await axios.post('http://localhost:5000/api/clientes/login', { email, senha });
-            localStorage.setItem('token', res.data.token);
-            setCliente(res.data.cliente);
-            navigate('/app/chamados');
-            return { success: true };
-        } catch (err) {
-            const errorMsg = err.response?.data?.error || 'Erro ao fazer login';
-            setError(errorMsg);
-            return { success: false, error: errorMsg };
+          const res = await api.post('/tecnicos/login', { email, senha });
+          localStorage.setItem('token', res.data.token);
+          setCliente(res.data.tecnico);
+          return { success: true };
+        } catch (err2) {
+          return { success: false, error: err2.response?.data?.error || 'Credenciais inválidas' };
         }
-    };
+      } else {
+        return { success: false, error: errorMsg || 'Erro ao fazer login' };
+      }
+    }
+  };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setCliente(null);
-        navigate('/login');
-    };
+  const logout = () => {
+    localStorage.removeItem('token');
+    setCliente(null);
+    navigate('/login');
+  };
 
-    return (
-        <AuthContext.Provider value={{ cliente, login, logout, loading, error }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ cliente, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
+
+// 3. Export default (opcional, mas limpo)
+export default AuthProvider;
