@@ -1,0 +1,163 @@
+
+.tecnico-chamados-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.tecnico-chamados-container h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.tecnico-chamados-filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tecnico-chamados-filtros input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 280px;
+  font-size: 14px;
+}
+
+.tecnico-chamados-botoes-filtro {
+  display: flex;
+  gap: 8px;
+}
+
+.tecnico-chamados-botoes-filtro button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tecnico-chamados-botoes-filtro button.ativo {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.tecnico-chamados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tecnico-chamado-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.tecnico-chamado-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.tecnico-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tecnico-id {
+  font-weight: bold;
+  color: #555;
+  font-size: 14px;
+}
+
+.tecnico-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+}
+
+.tecnico-chamado-card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.tecnico-categoria {
+  font-size: 13px;
+  color: #007bff;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.tecnico-data {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.tecnico-cliente-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tecnico-avatar {
+  width: 28px;
+  height: 28px;
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tecnico-status-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tecnico-status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tecnico-status-badge.aberto { background: #fff3cd; color: #856404; }
+.tecnico-status-badge.em-atendimento { background: #d1ecf1; color: #0c5460; }
+.tecnico-status-badge.encerrado { background: #d4edda; color: #155724; }
+
+.tecnico-btn-iniciar {
+  background: #343a40;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tecnico-btn-iniciar:hover {
+  background: #23272b;
+}

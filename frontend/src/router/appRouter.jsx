@@ -1,3 +1,4 @@
+// src/routes/AppRoutes.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -23,33 +24,35 @@ import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
 import TecnicoDetalhado from "../pages/admin/tecnicos/TecnicoDetalhado";
 import TecnicoEditar from "../pages/admin/tecnicos/TecnicosEditar";
 import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
+import TecnicoChamados from "../pages/admin/tecnicos/TecnicoChamado";
 
-
-// 🧩 Componente de proteção de rota
-const RotaProtegida = ({ children, adminOnly }) => {
+// Componente de proteção de rota
+const RotaProtegida = ({ children, adminOnly, role }) => {
   const { cliente, loading } = useContext(AuthContext);
 
   if (loading) return <div>Carregando...</div>;
-  if (!cliente) return <Navigate to="/login" />;
+  if (!cliente) return <Navigate to="/login" replace />;
 
-  // Admin só para role "admin"
-  if (adminOnly && cliente.role !== "admin") {
-    return <Navigate to="/app/chamados" />;
+  if (role && cliente.role !== role) {
+    return <Navigate to="/app/chamados" replace />;
   }
 
-  // Técnicos podem ver chamados
+  if (adminOnly && cliente.role !== "admin") {
+    return <Navigate to="/app/chamados" replace />;
+  }
+
   return children;
 };
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* Rotas públicas */}
+      {/* ==================== ROTAS PÚBLICAS ==================== */}
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
 
-      {/* Rotas privadas (com Sidebar/Layout) */}
+      {/* ==================== ROTAS PRIVADAS COM LAYOUT ==================== */}
       <Route
         path="/app"
         element={
@@ -58,15 +61,30 @@ function AppRoutes() {
           </RotaProtegida>
         }
       >
-        {/* CHAMADOS */}
+        {/* RAIZ DO APP → VAI PRA TABELA (PADRÃO) */}
+        <Route index element={<Navigate to="/app/chamados" replace />} />
+
+        {/* TÉCNICO - CARDS */}
+        <Route
+          path="tecnicos/chamados"
+          element={
+            <RotaProtegida role="tecnico">
+              <TecnicoChamados />
+            </RotaProtegida>
+          }
+        />
+
+        {/* ADMIN/CLIENTE - TABELA */}
         <Route
           path="chamados"
           element={
-            <RotaProtegida>
+            <RotaProtegida >
               <Chamados />
             </RotaProtegida>
           }
         />
+
+        {/* CHAMADOS - CRUD */}
         <Route
           path="chamado/novo"
           element={
@@ -92,7 +110,7 @@ function AppRoutes() {
           }
         />
 
-        {/* CLIENTES */}
+        {/* CLIENTES - ADMIN ONLY */}
         <Route
           path="clientes"
           element={
@@ -118,7 +136,7 @@ function AppRoutes() {
           }
         />
 
-        {/* TÉCNICOS */}
+        {/* TÉCNICOS - ADMIN ONLY */}
         <Route
           path="tecnicos"
           element={

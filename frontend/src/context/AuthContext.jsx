@@ -15,33 +15,39 @@ export const AuthProvider = ({ children }) => {
   // useEffect e login aqui (igual antes)
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      api.get('/verify-token')
-        .then(res => setCliente(res.data.cliente))
-        .catch(() => {
-          localStorage.removeItem('token');
-          navigate('/login');
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [navigate]);
+  const token = localStorage.getItem('token');
+  if (token) {
+    api.get('/verify-token') 
+      .then(res => {
+        setCliente(res.data.cliente); 
+        
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        navigate('/login');
+      })
+      .finally(() => setLoading(false));
+  } else {
+    setLoading(false);
+  }
+}, [navigate]);
 
   const login = async (email, senha) => {
     try {
       const res = await api.post('/clientes/login', { email, senha });
       localStorage.setItem('token', res.data.token);
       setCliente(res.data.cliente);
+      navigate('/app/chamados', { replace: true });
       return { success: true };
     } catch (err) {
       const errorMsg = err.response?.data?.error;
+
       if (errorMsg === "E-mail ou senha inválidos.") {
         try {
           const res = await api.post('/tecnicos/login', { email, senha });
           localStorage.setItem('token', res.data.token);
           setCliente(res.data.tecnico);
+          navigate('/app/tecnicos/chamados', { replace: true });
           return { success: true };
         } catch (err2) {
           return { success: false, error: err2.response?.data?.error || 'Credenciais inválidas' };

@@ -20,7 +20,7 @@ router.put("/:id", authMiddleware(["admin"]), editarTecnico);
 router.get("/:id", authMiddleware(["admin", "tecnico"]), obterTecnicoPorId);
 router.delete("/:id", authMiddleware(["admin"]), excluirTecnico);
 router.get("/", authMiddleware(["admin"]), listarTecnicos);
-router.post('/api/verify-token', authMiddleware, (req, res) => {
+router.post('/verify-token', authMiddleware, (req, res) => {
   res.json({ usuario: req.user }); // req.user vem do middleware
 });
 export default router;

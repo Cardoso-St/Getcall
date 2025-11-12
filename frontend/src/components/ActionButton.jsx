@@ -15,6 +15,7 @@ const ActionButton = ({ type, title, onClick }) => {
       title={title}
       onClick={onClick}
     >
+      
       {icons[type]}
     </button>
   );

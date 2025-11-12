@@ -6,6 +6,7 @@ import ActionButton from "../../../components/ActionButton";
 
 const Chamados = () => {
   const navigate = useNavigate();
+  
   const [chamados, setChamados] = useState([]);
   const [loading, setLoading] = useState(true);
 
