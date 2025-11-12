@@ -150,7 +150,7 @@ export const obterTecnicoPorId = async (req, res) => {
     }
 
     console.log("Técnico encontrado:", tecnico.email);
-    res.json(tecnico);
+    res.json({tecnico});
   } catch (err) {
     console.error("Erro ao buscar técnico:", err.message);
     res.status(500).json({ error: "Erro no servidor." });

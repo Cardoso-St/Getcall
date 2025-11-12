@@ -1,7 +1,7 @@
 // src/pages/admin/tecnicos/TecnicoDetalhado.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import api from "../../../services/api"; // ← IMPORTA api.js
+import api from "../../../services/api";
 import "../../../css/admin/tecnicos/TecnicoDetalhado.css";
 
 const TecnicoDetalhado = () => {
@@ -12,14 +12,15 @@ const TecnicoDetalhado = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Função para formatar horários
+  // FUNÇÃO DENTRO DO COMPONENTE
   const formatarHorarios = (horarioObj) => {
     if (!horarioObj || typeof horarioObj !== "object") return "—";
 
     return Object.entries(horarioObj)
       .map(([periodo, horarios]) => {
         if (!Array.isArray(horarios) || horarios.length === 0) return null;
-        return `<strong>${periodo}:</strong> ${horarios.sort().join(", ")}`;
+        const periodoFormatado = periodo.charAt(0).toUpperCase() + periodo.slice(1);
+        return `<strong>${periodoFormatado}:</strong> ${horarios.sort().join(", ")}`;
       })
       .filter(Boolean)
       .join(" | ") || "—";
@@ -42,39 +43,49 @@ const TecnicoDetalhado = () => {
     carregarTecnico();
   }, [id]);
 
-  // Loading
+  // LOADING
   if (loading) {
     return (
       <main className="tecnico-detalhado">
         <button className="voltar" onClick={() => navigate(-1)}>
-          ← Voltar
+          Voltar
         </button>
         <p style={{ textAlign: "center", marginTop: "40px" }}>Carregando técnico...</p>
       </main>
     );
   }
 
-  // Erro
+  // ERRO
   if (error) {
     return (
       <main className="tecnico-detalhado">
         <button className="voltar" onClick={() => navigate(-1)}>
-          ← Voltar
+          Voltar
         </button>
-        <p style={{ color: "red", textAlign: "center", marginTop: "40px" }}>
-          {error}
-        </p>
+        <p style={{ color: "red", textAlign: "center", marginTop: "40px" }}>{error}</p>
       </main>
     );
   }
 
-  // Dados reais
+  // TÉCNICO NÃO ENCONTRADO
+  if (!tecnico) {
+    return (
+      <main className="tecnico-detalhado">
+        <button className="voltar" onClick={() => navigate(-1)}>
+          Voltar
+        </button>
+        <p style={{ textAlign: "center", marginTop: "40px" }}>Técnico não encontrado.</p>
+      </main>
+    );
+  }
+
+  // AQUI É SEGURO
   const { nome, email, telefone, formacao, especialidade, horarioDeAtendimento } = tecnico;
 
   return (
     <main className="tecnico-detalhado">
       <button className="voltar" onClick={() => navigate(-1)}>
-        ← Voltar
+        Voltar
       </button>
 
       <h2 className="titulo-pagina">Técnico Detalhado</h2>
@@ -99,47 +110,31 @@ const TecnicoDetalhado = () => {
         <div className="tecnico-info">
           <div className="info-card">
             <h4>Dados Pessoais</h4>
-            <p>
-              <strong>ID:</strong> {id}
-            </p>
-            <p>
-              <strong>Telefone:</strong> {telefone || "—"}
-            </p>
-            <p>
-              <strong>Email:</strong> {email}
-            </p>
+            <p><strong>ID:</strong> {id}</p>
+            <p><strong>Telefone:</strong> {telefone || "—"}</p>
+            <p><strong>Email:</strong> {email}</p>
           </div>
 
           <div className="info-card">
             <h4>Formação e Especialidade</h4>
-            <p>
-              <strong>Formação:</strong> {formacao || "—"}
-            </p>
-            <p>
-              <strong>Especialidade:</strong> {especialidade || "—"}
-            </p>
-            <p>
-              <strong>Certificações:</strong> —
-            </p>
+            <p><strong>Formação:</strong> {formacao || "—"}</p>
+            <p><strong>Especialidade:</strong> {especialidade || "—"}</p>
+            <p><strong>Certificações:</strong> —</p>
           </div>
 
           <div className="info-card">
             <h4>Horário de Atendimento</h4>
             <p
               dangerouslySetInnerHTML={{
-                __html: formatarHorarios(horarioDeAtendimento),
+                __html: formatarHorarios(horarioDeAtendimento), // ← AGORA FUNCIONA
               }}
             />
           </div>
 
           <div className="info-card">
             <h4>Experiência</h4>
-            <p>
-              <strong>Chamados Atendidos:</strong> 0
-            </p>
-            <p>
-              <strong>Projetos Realizados:</strong> —
-            </p>
+            <p><strong>Chamados Atendidos:</strong> 0</p>
+            <p><strong>Projetos Realizados:</strong> —</p>
           </div>
 
           <div className="info-card">
