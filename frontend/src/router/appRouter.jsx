@@ -24,9 +24,12 @@ import Tecnicos from "../pages/admin/tecnicos/Tecnicos";
 import TecnicoDetalhado from "../pages/admin/tecnicos/TecnicoDetalhado";
 import TecnicoEditar from "../pages/admin/tecnicos/TecnicosEditar";
 import TecnicoNovo from "../pages/admin/tecnicos/TecnicoNovo";
-import TecnicoChamados from "../pages/admin/tecnicos/TecnicoChamado";
+import TecnicoChamados from "../pages/admin/tecnicos/TecnicoChamado"; // PÁGINA DO TÉCNICO
 
-// Componente de proteção de rota
+// TÉCNICO - DETALHE DO CHAMADO
+import ChamadoDetalhadoTecnico from "../pages/admin/tecnicos/TecnicoChamado";;
+
+// Componente de proteção
 const RotaProtegida = ({ children, adminOnly, role }) => {
   const { cliente, loading } = useContext(AuthContext);
 
@@ -38,7 +41,7 @@ const RotaProtegida = ({ children, adminOnly, role }) => {
   }
 
   if (adminOnly && cliente.role !== "admin") {
-    return <Navigate to="/app/chamados" replace />;
+    return <Navigate to="/app/tecnicos/chamados" replace />;
   }
 
   return children;
@@ -61,10 +64,10 @@ function AppRoutes() {
           </RotaProtegida>
         }
       >
-        {/* RAIZ DO APP → VAI PRA TABELA (PADRÃO) */}
+        {/* RAIZ → TABELA */}
         <Route index element={<Navigate to="/app/chamados" replace />} />
 
-        {/* TÉCNICO - CARDS */}
+        {/* TÉCNICO - LISTA DE CHAMADOS */}
         <Route
           path="tecnicos/chamados"
           element={
@@ -78,13 +81,13 @@ function AppRoutes() {
         <Route
           path="chamados"
           element={
-            <RotaProtegida >
+            <RotaProtegida>
               <Chamados />
             </RotaProtegida>
           }
         />
 
-        {/* CHAMADOS - CRUD */}
+        {/* CHAMADOS - ADMIN */}
         <Route
           path="chamado/novo"
           element={
@@ -101,16 +104,18 @@ function AppRoutes() {
             </RotaProtegida>
           }
         />
-        <Route
-          path="chamado/:id"
-          element={
-            <RotaProtegida>
-              <ChamadoDetalhado />
-            </RotaProtegida>
-          }
-        />
+       <Route
+  path="chamado/:id"
+  element={
+    <RotaProtegida>
+      <ChamadoDetalhado />
+    </RotaProtegida>
+  }
+/>
 
-        {/* CLIENTES - ADMIN ONLY */}
+     
+
+        {/* CLIENTES - ADMIN */}
         <Route
           path="clientes"
           element={
@@ -136,7 +141,7 @@ function AppRoutes() {
           }
         />
 
-        {/* TÉCNICOS - ADMIN ONLY */}
+        {/* TÉCNICOS - ADMIN */}
         <Route
           path="tecnicos"
           element={

@@ -50,43 +50,29 @@ export const criarChamado = async (req, res) => {
   }
 };
 export const atribuirChamado = async (req, res) => {
-  const { id } = req.params; // ID do chamado
-  const { tecnicoId } = req.body; // ID do técnico
+  const { id } = req.params;
+  const { tecnicoId } = req.body;
 
   try {
-    // 1. Busca o chamado
     const chamado = await ChamadoModel.findByPk(id);
-    if (!chamado) {
-      return res.status(404).json({ error: "Chamado não encontrado" });
-    }
+    if (!chamado) return res.status(404).json({ error: "Chamado não encontrado" });
+    if (chamado.tecnico_id) return res.status(400).json({ error: "Chamado já atribuído" });
 
-    // 2. Verifica se já está atribuído
-    if (chamado.tecnico_id) {
-      return res.status(400).json({ error: "Chamado já está em atendimento" });
-    }
-
-    // 3. Verifica se o técnico existe
     const tecnico = await TecnicoModel.findByPk(tecnicoId);
-    if (!tecnico) {
-      return res.status(404).json({ error: "Técnico não encontrado" });
-    }
+    if (!tecnico) return res.status(404).json({ error: "Técnico não encontrado" });
 
-    // 4. Atribui e atualiza status
     chamado.tecnico_id = tecnicoId;
     chamado.status = "Em atendimento";
     await chamado.save();
 
-    // 5. Retorna o chamado atualizado
     const chamadoAtualizado = await ChamadoModel.findByPk(id, {
       include: [
-        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] }
-      ]
+        { model: ClienteModel, as: "cliente", attributes: ["id", "nome", "email"] },
+        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] },
+      ],
     });
 
-    res.json({
-      message: "Chamado iniciado com sucesso",
-      chamado: chamadoAtualizado
-    });
+    res.json(chamadoAtualizado); // RETORNA OBJETO COMPLETO
   } catch (err) {
     console.error("Erro ao atribuir chamado:", err);
     res.status(500).json({ error: "Erro no servidor" });
@@ -97,10 +83,18 @@ export const atribuirChamado = async (req, res) => {
  */
 export const listarChamados = async (req, res) => {
   try {
+    const { tecnico_id } = req.query; // ADICIONADO
+
+    const where = {};
+    if (tecnico_id) {
+      where.tecnico_id = tecnico_id; // FILTRA POR TÉCNICO
+    }
+
     const chamados = await ChamadoModel.findAll({
+      where,
       include: [
         { model: ClienteModel, as: "cliente", attributes: ["id", "nome", "email"] },
-        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] } // ADICIONE
+        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] },
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -121,11 +115,10 @@ export const listaChamadoPorId = async (req, res) => {
 
   try {
     const chamado = await ChamadoModel.findByPk(id, {
-      include: {
-        model: ClienteModel,
-        as: "cliente",
-        attributes: ["id", "nome", "email"],
-      },
+      include: [
+        { model: ClienteModel, as: "cliente", attributes: ["id", "nome", "email"] },
+        { model: TecnicoModel, as: "tecnico", attributes: ["id", "nome"] }, // ADICIONE
+      ],
     });
 
     if (!chamado) {

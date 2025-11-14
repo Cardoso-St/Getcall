@@ -2,6 +2,7 @@
 import { DataTypes, UUIDV4 } from "sequelize";
 import { conn } from "../config/sequelize.js";
 import ClienteModel from "./ClienteModel.js";
+import TecnicoModel from "./TecnicosModel.js";
 
 const Chamados = conn.define("Chamados", {
   id: {
@@ -52,14 +53,13 @@ const Chamados = conn.define("Chamados", {
     key: 'id'
   }
 },
-  // Caso queira ativar o relacionamento com técnicos futuramente
-  // tecnico_id: {
-  //   type: DataTypes.UUID,
-  //   references: {
-  //     model: TecnicoModel,
-  //     key: "id",
-  //   },
-  // },
+  tecnico_id: {
+    type: DataTypes.UUID,
+    references: {
+      model: TecnicoModel,
+      key: "id",
+    },
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,

@@ -135,14 +135,14 @@ const [chamadosAtribuidos, setChamadosAtribuidos] = useState([]);
 
           <div className="info-card">
             <div className="info-card">
-  <h4>Chamados Atribuídos</h4>
-  {chamadosAtribuidos.length === 0 ? (
-    <p>Nenhum chamado em andamento.</p>
-  ) : (
-    <ul className="chamados-lista">
-      {chamadosAtribuidos.map(c => (
-        <li key={c.id}>
-          <strong>{c.nome}</strong> - {c.status}
+              <h4>Chamados Atribuídos</h4>
+              {chamadosAtribuidos.length === 0 ? (
+              <p>Nenhum chamado em andamento.</p>
+             ) : (
+                    <ul className="chamados-lista">
+               {chamadosAtribuidos.map(c => (
+                 <li key={c.id}>
+              <strong>{c.nome}</strong> - {c.status}
           <br />
           <small>Cliente: {c.cliente?.nome}</small>
         </li>

@@ -23,6 +23,7 @@ router.get("/:id", listaChamadoPorId);
 router.put("/:id", editarChamados);
 
 // DELETE /api/chamados → Deletar o chamado
-router.delete("/:id", deletarChamado);
+// routes/chamados.js
+router.delete("/:id", authMiddleware(["admin", "tecnico"]), deletarChamado);
 router.post("/:id/atribuir", authMiddleware(["tecnico"]), atribuirChamado)
 export default router;

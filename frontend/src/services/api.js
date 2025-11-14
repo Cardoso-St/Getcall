@@ -25,5 +25,13 @@ api.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+const atualizarStatus = async (novoStatus) => {
+  try {
+    const res = await api.put(`/chamados/${id}`, { status: novoStatus });
+    setChamado(res.data.chamado || res.data);
+  } catch (err) {
+    alert(err.response?.data?.error || "Erro ao atualizar status");
+  }
+};
 
 export default api;

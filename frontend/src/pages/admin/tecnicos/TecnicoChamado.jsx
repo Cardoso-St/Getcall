@@ -29,30 +29,20 @@ const TecnicoChamados = () => {
     carregar();
   }, []);
 
-  const iniciarChamado = async (chamadoId) => {
-    try {
-      const res = await api.post(`/chamados/${chamadoId}/atribuir`, {
-        tecnicoId: cliente.id,
-      });
+const iniciarChamado = async (chamadoId) => {
+  try {
+    const res = await api.post(`/chamados/${chamadoId}/atribuir`, {
+      tecnicoId: cliente.id,
+    });
 
-      // Atualiza localmente com dados do backend
-      setChamados(prev =>
-        prev.map(c =>
-          c.id === chamadoId
-            ? {
-                ...c,
-                tecnico: { nome: cliente.nome },
-                status: "Em atendimento",
-              }
-            : c
-        )
-      );
-    } catch (err) {
-      console.error("Erro ao iniciar:", err.response?.data);
-      alert(err.response?.data?.error || "Erro ao iniciar chamado");
-    }
-  };
-
+    // Usa exatamente o que o backend retornou
+    setChamados(prev =>
+      prev.map(c => (c.id === chamadoId ? res.data : c))
+    );
+  } catch (err) {
+    alert(err.response?.data?.error || "Erro ao iniciar chamado");
+  }
+};
   const chamadosFiltrados = chamados
     .filter(c => {
       if (filtro === "Todos") return true;
