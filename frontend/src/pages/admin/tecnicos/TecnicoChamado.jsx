@@ -73,7 +73,7 @@ const TecnicoChamados = () => {
           onChange={e => setBusca(e.target.value)}
         />
         <div className="tecnico-chamados-botoes-filtro">
-          {["Todos", "Abertos", "Pendentes", "Fechados"].map(f => (
+          {["Todos", "Abertos", "Pendentes", "Encerrados"].map(f => (
             <button
               key={f}
               className={filtro === f ? "ativo" : ""}
