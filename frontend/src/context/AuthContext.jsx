@@ -3,34 +3,29 @@ import React, { createContext, useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-// 1. Cria o contexto
 export const AuthContext = createContext();
 
-// 2. Componente Provider
 export const AuthProvider = ({ children }) => {
   const [cliente, setCliente] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // useEffect e login aqui (igual antes)
-
   useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    api.get('/verify-token') 
-      .then(res => {
-        setCliente(res.data.cliente); 
-        
-      })
-      .catch(() => {
-        localStorage.removeItem('token');
-        navigate('/login');
-      })
-      .finally(() => setLoading(false));
-  } else {
-    setLoading(false);
-  }
-}, [navigate]);
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.get('/verify-token')
+        .then(res => {
+          setCliente(res.data.cliente || res.data.tecnico);
+        })
+        .catch(() => {
+          localStorage.removeItem('token');
+          navigate('/login');
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [navigate]); // ← CORRIGIDO AQUI
 
   const login = async (email, senha) => {
     try {
@@ -64,12 +59,21 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
+  const updateCliente = (dadosAtualizados) => {
+    setCliente(dadosAtualizados);
+  };
+
   return (
-    <AuthContext.Provider value={{ cliente, login, logout, loading }}>
+    <AuthContext.Provider value={{
+      cliente,
+      login,
+      logout,
+      loading,
+      updateCliente
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 3. Export default (opcional, mas limpo)
 export default AuthProvider;

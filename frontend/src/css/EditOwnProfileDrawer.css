@@ -1,0 +1,141 @@
+/* ========================================
+   MODAL DE EDIÇÃO DE PERFIL – TOTALMENTE SCOPED
+   ======================================== */
+
+/* Overlay (fundo escuro) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+  background: white;
+  width: 480px;
+  max-width: 90vw;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: scaleIn 0.4s ease;
+  position: relative;
+}
+
+/* Botão fechar (X) */
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #aaa;
+  z-index: 1;
+}
+
+/* Cabeçalho do modal */
+.modal-header {
+  text-align: center;
+  padding: 40px 40px 20px;
+}
+
+.modal-avatar {
+  width: 100px;
+  height: 100px;
+  background: #0066ff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0 auto 16px;
+}
+
+.modal-header h2 {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+
+.modal-header p {
+  color: #666;
+  margin: 0;
+}
+
+/* Formulário – AGORA TOTALMENTE ESCOPADO */
+.modal-content form {
+  padding: 0 40px 40px;
+}
+
+/* Grupos de input */
+.modal-content .input-group {
+  margin-bottom: 20px;
+}
+
+.modal-content .input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-content .input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.modal-content .input-group input:focus {
+  outline: none;
+  border-color: #0066ff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+}
+
+/* Botões de ação */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.btn-cancel {
+  padding: 12px 24px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-save {
+  padding: 12px 32px;
+  background: #0066ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

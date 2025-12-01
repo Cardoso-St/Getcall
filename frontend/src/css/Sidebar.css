@@ -40,7 +40,8 @@
 }
 /* Usuário no rodapé */
 .sidebar-cliente {
-  margin-top: auto; /* empurra usuário para baixo */
+position: relative;   /* ESSA LINHA É A CHAVE DE TUDO */
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -131,4 +132,75 @@
 .menu-btn.active {
   background-color: #00e389;
   color: black;
+}
+/* ==================== DROPDOWN PERFIL + SAIR ==================== */
+
+.profile-dropdown-menu {
+  position: absolute;
+  bottom: 50%;                    /* sai do meio do bloco do usuário */
+  left: 100%;                     /* começa logo à direita do bloco */
+  margin-left: 24px;              /* espaçamento bonitinho */
+  margin-bottom: 20px;             /* ajusta altura */
+  transform: translateY(50%);     /* centraliza verticalmente */
+  width: 200px;
+  background: #282828;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  z-index: 9999;
+}
+@keyframes dropdownShow {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #333333;
+}
+
+.dropdown-item.danger {
+  color: #ff453a;           /* vermelho do "Sair" */
+}
+
+.dropdown-item.danger:hover {
+  background: rgba(255, 69, 58, 0.15);
+}
+
+/* Opcional: esconde o botão "Sair" antigo duplicado */
+.logout-btn {
+  display: none !important;
+}
+/* SOLUÇÃO FINAL – 1 LINHA, FUNCIONA SEMPRE */
+.edit-profile-btn svg {
+  background: transparent !important;
+}
+
+/* Força o ícone a ser só traço (perfeito pro LuMenu) */
+.edit-profile-btn svg path {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
