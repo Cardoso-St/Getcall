@@ -1,7 +1,7 @@
 # 📌 Sistema de Chamados
 
 Este projeto tem como objetivo gerenciar chamados de forma eficiente, permitindo que **administradores**, **técnicos** e **clientes** interajam em um ambiente organizado e funcional.
-
+Obs: A branch mais atualizada é a DEV, por favor avaliar pela mesma.
 ---
 
 ## 🔐 Login
